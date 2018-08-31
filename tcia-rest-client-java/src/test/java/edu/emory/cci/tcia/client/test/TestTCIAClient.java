@@ -19,11 +19,11 @@ import edu.emory.cci.tcia.client.TCIAClientImpl;
 
 
 /**
- *  Refer https://wiki.cancerimagingarchive.net/display/Public/REST+API+Usage+Guide for complete list of API
+ *  Refer https://wiki.cancerimagingarchive.net/display/Public/TCIA+Programmatic+Interface+%28REST+API%29+Usage+Guide
  */
 public class TestTCIAClient {
 
-    private static String baseUrl = "https://services.cancerimagingarchive.net/services/TCIA/TCIA/query"; // Base URL of the service
+    private static String baseUrl = "https://services.cancerimagingarchive.net/services/v3/TCIA/query"; // Base URL of the service
 	private static String apiKey = "";
 	
 	/**
