@@ -7,6 +7,7 @@ import java.net.URI;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -15,7 +16,7 @@ public class TCIAClientImpl implements ITCIAClient{
 
 	private final static String API_KEY_FIELD = "api_key";
 	private String apiKey;
-	private DefaultHttpClient httpClient ;
+	private HttpClient httpClient ;
 	private String baseUrl ;
 	private static String getImage = "getImage";
 	private static String getManufacturerValues = "getManufacturerValues";
@@ -32,6 +33,7 @@ public class TCIAClientImpl implements ITCIAClient{
 		this.apiKey = apiKey;
 		this.baseUrl = baseUrl;
 		httpClient = new DefaultHttpClient();
+		httpClient = WebClientDevWrapper.wrapClient(httpClient);
 	}
 	
 	static String convertStreamToString(java.io.InputStream is) {

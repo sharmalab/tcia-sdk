@@ -23,7 +23,7 @@ import edu.emory.cci.tcia.client.TCIAClientImpl;
  */
 public class TestTCIAClient {
 
-	private static String baseUrl = "https://services-test.cancerimagingarchive.net/services/TCIA/TCIA/query"; // Base URL of the service
+    private static String baseUrl = "https://services.cancerimagingarchive.net/services/TCIA/TCIA/query"; // Base URL of the service
 	private static String apiKey = "";
 	
 	/**
