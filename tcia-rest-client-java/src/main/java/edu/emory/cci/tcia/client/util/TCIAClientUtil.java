@@ -3,7 +3,6 @@ package edu.emory.cci.tcia.client.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import edu.emory.cci.tcia.client.TCIAClientException;
-import edu.emory.cci.tcia.client.WebClientDevWrapper;
 import edu.emory.cci.tcia.client.conf.TCIAConf;
 import edu.emory.cci.tcia.client.conf.TCIAConstants;
 import org.apache.http.HttpEntity;

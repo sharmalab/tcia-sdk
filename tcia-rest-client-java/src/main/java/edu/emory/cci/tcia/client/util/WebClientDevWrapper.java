@@ -1,4 +1,4 @@
-package edu.emory.cci.tcia.client;
+package edu.emory.cci.tcia.client.util;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
