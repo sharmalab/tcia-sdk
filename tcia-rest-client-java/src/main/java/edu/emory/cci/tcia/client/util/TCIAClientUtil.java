@@ -55,7 +55,7 @@ public class TCIAClientUtil {
 
 			String authString = tciaConf.getUsername() + TCIAConstants.AUTH_SEPARATOR + tciaConf.getPassword();
 			String encodedBytes = Base64.getEncoder().encodeToString(authString.getBytes());
-			authValue = AUTHORIZATION_FLAG + " " + encodedBytes;
+			authValue = AUTHORIZATION_FLAG + TCIAConstants.AUTH_VAL_SEPARATOR + encodedBytes;
 		} catch (IOException e) {
 			logger.error("Exception in initializing the TCIA Client", e);
 		}
