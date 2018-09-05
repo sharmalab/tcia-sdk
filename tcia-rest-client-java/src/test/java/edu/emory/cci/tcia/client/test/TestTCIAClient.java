@@ -185,11 +185,10 @@ public class TestTCIAClient {
 		ITCIAClient client = new TCIAClientImpl();
 		String collection = null ; // optional
 		String bodyPartExamined = "BRAIN"; // optional
-		String modality = "MR"; // optional
-		
+
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
-			String respJSON = client.getModalityValues(collection, bodyPartExamined, modality, OutputFormat.json);
+			String respJSON = client.getModalityValues(collection, bodyPartExamined, OutputFormat.json);
 			
 			// Print server response
 			logger.info(respJSON);

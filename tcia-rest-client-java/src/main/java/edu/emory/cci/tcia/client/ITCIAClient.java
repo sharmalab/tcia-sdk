@@ -6,8 +6,8 @@ import java.io.InputStream;
  * The Interface consisting of the method definitions for the TCIA client
  */
 public interface ITCIAClient {
-	public String getModalityValues(String collection,String bodyPartExamined,String modality , OutputFormat format) throws TCIAClientException;
-	public String getManufacturerValues(String collection,String bodyPartExamined,String modality, OutputFormat format) throws TCIAClientException;
+	public String getModalityValues(String collection, String bodyPartExamined, OutputFormat format) throws TCIAClientException;
+	public String getManufacturerValues(String collection, String bodyPartExamined, String modality, OutputFormat format) throws TCIAClientException;
 	public String getCollectionValues(OutputFormat format) throws TCIAClientException;
 	public String getBodyPartValues(String collection,String bodyPartExamined,String modality, OutputFormat format) throws TCIAClientException;
 	public String getPatientStudy(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
