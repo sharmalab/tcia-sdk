@@ -1,6 +1,6 @@
 package edu.emory.cci.tcia.client;
 
-import java.io.InputStream;
+import edu.emory.cci.tcia.client.util.ImageResult;
 
 /**
  * The Interface consisting of the method definitions for the TCIA client
@@ -17,29 +17,13 @@ public interface ITCIAClient {
 	public String getPatient(String collection, OutputFormat format) throws TCIAClientException;
 	public ImageResult getImage(String seriesInstanceUID) throws TCIAClientException;
 	public ImageResult getSingleImage(String seriesInstanceUID, String sopInstanceUID) throws TCIAClientException;
+	public String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException;
+
 	public String NewStudiesInPatientCollection(String collection, OutputFormat format) throws TCIAClientException;
 	public String getSOPInstanceUIDs(String collection, OutputFormat format) throws TCIAClientException;
 	public String PatientsByModality(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
-	public String getSeriesSize(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 	public String NewPatientsInCollection(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 	public String getSharedList(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 
 
-	public static class ImageResult {
-		private InputStream rawData;
-		private Integer imageCount;
-		public InputStream getRawData() {
-			return rawData;
-		}
-		public void setRawData(InputStream rawData) {
-			this.rawData = rawData;
-		}
-		public Integer getImageCount() {
-			return imageCount;
-		}
-		public void setImageCount(Integer imageCount) {
-			this.imageCount = imageCount;
-		}
-		
-	}
 }
