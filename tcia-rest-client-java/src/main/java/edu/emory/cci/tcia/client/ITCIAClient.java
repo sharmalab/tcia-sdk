@@ -12,7 +12,15 @@ public interface ITCIAClient {
 	public String getSeries(String collection,String modality,String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 	public String getPatient(String collection, OutputFormat format) throws TCIAClientException;
 	public ImageResult getImage(String seriesInstanceUID) throws TCIAClientException;
-	
+	public ImageResult getSingleImage(String seriesInstanceUID) throws TCIAClientException;
+	public String NewStudiesInPatientCollection(String collection, OutputFormat format) throws TCIAClientException;
+	public String getSOPInstanceUIDs(String collection, OutputFormat format) throws TCIAClientException;
+	public String PatientsByModality(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
+	public String getSeriesSize(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
+	public String NewPatientsInCollection(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
+	public String getSharedList(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
+
+
 	public static class ImageResult {
 		private InputStream rawData;
 		private Integer imageCount;

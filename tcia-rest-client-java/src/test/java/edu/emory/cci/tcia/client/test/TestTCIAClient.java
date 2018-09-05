@@ -23,8 +23,8 @@ import edu.emory.cci.tcia.client.TCIAClientImpl;
  */
 public class TestTCIAClient {
 
-    private static String baseUrl = "http://172.20.11.222:8000/radiology"; // Unsecured base URL of the service
-//    private static String baseUrl = "http://172.20.11.222:8000/radiology-secured"; // Secured base URL of the service
+//    private static String baseUrl = "http://172.20.11.222:8000/radiology"; // Unsecured base URL of the service
+    private static String baseUrl = "http://172.20.11.222:8000/radiology-secured"; // Secured base URL of the service
 	private static String apiKey = "";
 	
 	/**

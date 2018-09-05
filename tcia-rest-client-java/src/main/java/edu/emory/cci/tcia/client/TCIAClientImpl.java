@@ -1,9 +1,13 @@
 package edu.emory.cci.tcia.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import edu.emory.cci.tcia.client.conf.TCIAUser;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -12,28 +16,49 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.util.Base64;
+
 public class TCIAClientImpl implements ITCIAClient{
 
-	private final static String API_KEY_FIELD = "api_key";
+	private final static String AUTHORIZATION_HEADER = "Authorization";
+	private final static String AUTHORIZATION_FLAG = "ldap";
 	private String apiKey;
 	private HttpClient httpClient ;
 	private String baseUrl ;
 	private static String getImage = "getImage";
 	private static String getManufacturerValues = "getManufacturerValues";
-	private static  String getModalityValues = "getModalityValues";
-	private static  String getCollectionValues = "getCollectionValues";
-	private static  String getBodyPartValues = "getBodyPartValues";
-	private static  String getPatientStudy = "getPatientStudy";
-	private static  String getSeries = "getSeries";
-	private static  String getPatient = "getPatient";
+	private static String getModalityValues = "getModalityValues";
+	private static String getCollectionValues = "getCollectionValues";
+	private static String getBodyPartValues = "getBodyPartValues";
+	private static String getPatientStudy = "getPatientStudy";
+	private static String getSeries = "getSeries";
+	private static String getPatient = "getPatient";
+
+
+	private String authValue;
+
 	
-	
-	public TCIAClientImpl(String apiKey , String baseUrl)
+	public TCIAClientImpl(String apiKey, String baseUrl)
 	{
 		this.apiKey = apiKey;
 		this.baseUrl = baseUrl;
 		httpClient = new DefaultHttpClient();
 		httpClient = WebClientDevWrapper.wrapClient(httpClient);
+
+		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+
+		try {
+			TCIAUser currentUser = mapper.readValue(new File("src/main/resources/config.yaml"), TCIAUser.class);
+			String authString = currentUser.getUsername() + ":" + currentUser.getPassword();
+
+			String encodedBytes = Base64.getEncoder().encodeToString(authString.getBytes());
+			authValue = AUTHORIZATION_FLAG + " " + encodedBytes;
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	static String convertStreamToString(java.io.InputStream is) {
@@ -78,7 +103,7 @@ public class TCIAClientImpl implements ITCIAClient{
 		HttpGet request = new HttpGet(uri);
 
 		// add api_key to the header
-		request.setHeader(API_KEY_FIELD, apiKey);
+		request.setHeader(AUTHORIZATION_HEADER, authValue);
 		HttpResponse response = httpClient.execute(request);
 		if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
 																// error
@@ -284,7 +309,7 @@ public class TCIAClientImpl implements ITCIAClient{
 			HttpGet request = new HttpGet(uri);
 
 			// add api_key to the header
-			request.setHeader(API_KEY_FIELD, apiKey);
+			request.setHeader(AUTHORIZATION_HEADER, authValue);
 			long startTime = System.currentTimeMillis();
 			HttpResponse response = httpClient.execute(request);
 			long diff = System.currentTimeMillis() - startTime;
@@ -326,6 +351,33 @@ public class TCIAClientImpl implements ITCIAClient{
 		}
 	}
 
-	
+	public ImageResult getSingleImage(String seriesInstanceUID) throws TCIAClientException {
+		return null;
+	}
+
+	public String NewStudiesInPatientCollection(String collection, OutputFormat format) throws TCIAClientException {
+		return null;
+	}
+
+	public String getSOPInstanceUIDs(String collection, OutputFormat format) throws TCIAClientException {
+		return null;
+	}
+
+	public String PatientsByModality(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
+		return null;
+	}
+
+	public String getSeriesSize(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
+		return null;
+	}
+
+	public String NewPatientsInCollection(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
+		return null;
+	}
+
+	public String getSharedList(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
+		return null;
+	}
+
 
 }
