@@ -1,2 +1,4 @@
+authheader: Authorization
+authflag: ldap
 username: myusername
 password: mypassword

@@ -7,7 +7,8 @@ import java.net.URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import edu.emory.cci.tcia.client.conf.TCIAUser;
+import edu.emory.cci.tcia.client.conf.TCIAConf;
+import edu.emory.cci.tcia.client.conf.TCIAConstants;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -20,8 +21,6 @@ import java.util.Base64;
 
 public class TCIAClientImpl implements ITCIAClient{
 
-	private final static String AUTHORIZATION_HEADER = "Authorization";
-	private final static String AUTHORIZATION_FLAG = "ldap";
 	private String apiKey;
 	private HttpClient httpClient ;
 	private String baseUrl ;
@@ -36,6 +35,8 @@ public class TCIAClientImpl implements ITCIAClient{
 
 
 	private String authValue;
+	private static String AUTHORIZATION_HEADER = null;
+	private static String AUTHORIZATION_FLAG = null;
 
 	
 	public TCIAClientImpl(String apiKey, String baseUrl)
@@ -48,9 +49,17 @@ public class TCIAClientImpl implements ITCIAClient{
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
 		try {
-			TCIAUser currentUser = mapper.readValue(new File("src/main/resources/config.yaml"), TCIAUser.class);
-			String authString = currentUser.getUsername() + ":" + currentUser.getPassword();
+			TCIAConf tciaConf = mapper.readValue(new File(TCIAConstants.TCIA_CONF_FILE), TCIAConf.class);
 
+			if (AUTHORIZATION_HEADER == null) {
+				AUTHORIZATION_HEADER = tciaConf.getAuthheader();
+			}
+
+			if (AUTHORIZATION_FLAG == null) {
+				AUTHORIZATION_FLAG = tciaConf.getAuthflag();
+			}
+
+			String authString = tciaConf.getUsername() + TCIAConstants.AUTH_SEPARATOR + tciaConf.getPassword();
 			String encodedBytes = Base64.getEncoder().encodeToString(authString.getBytes());
 			authValue = AUTHORIZATION_FLAG + " " + encodedBytes;
 
