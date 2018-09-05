@@ -2,7 +2,6 @@ package edu.emory.cci.tcia.client.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import edu.emory.cci.tcia.client.ITCIAClient;
 import edu.emory.cci.tcia.client.TCIAClientException;
 import edu.emory.cci.tcia.client.WebClientDevWrapper;
 import edu.emory.cci.tcia.client.conf.TCIAConf;
@@ -26,6 +25,9 @@ import java.util.Base64;
 import org.apache.http.client.HttpClient;
 
 
+/**
+ * The utility methods of the TCIA client.
+ */
 public class TCIAClientUtil {
 
 	private static String authValue;
@@ -90,7 +92,7 @@ public class TCIAClientUtil {
 		}
 	}
 
-	public static InputStream getStatus(URI uri, HttpResponse response) throws TCIAClientException {
+	private static InputStream getStatus(URI uri, HttpResponse response) throws TCIAClientException {
 		if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
 		{
 			throw new TCIAClientException(uri.toString(),
@@ -104,19 +106,31 @@ public class TCIAClientUtil {
 		}
 	}
 
-	public static String getAuthValue() {
+	private static String getAuthValue() {
 		return authValue;
 	}
 
-	public static String getAuthorizationHeader() {
+	private static String getAuthorizationHeader() {
 		return AUTHORIZATION_HEADER;
 	}
 
+	/**
+	 * Get the complete url of the resource
+	 * @return the url of the resource
+	 */
 	public static String getResourceUrl() {
 		return RESOURCE_URL;
 	}
 
 
+	/**
+	 * Authenticate with the given authentication mechanism and return the image result.
+	 * @param uriBuilder the URIBuilder object
+	 * @return the ImageResult
+	 * @throws URISyntaxException, if the given URI syntax is invalid
+	 * @throws TCIAClientException, if TCIA client exception occurred
+	 * @throws IOException, if an IO Exception occurred
+	 */
 	public static ImageResult authenticateAndGetImage(URIBuilder uriBuilder) throws URISyntaxException, TCIAClientException, IOException {
 		URI uri = uriBuilder.build();
 		// create a new HttpGet request
@@ -133,8 +147,7 @@ public class TCIAClientUtil {
 		return getImageResult(uri, response);
 	}
 
-
-	public static ImageResult getImageResult(URI uri, HttpResponse response) throws TCIAClientException, IOException {
+	private static ImageResult getImageResult(URI uri, HttpResponse response) throws TCIAClientException, IOException {
 		if (response.getStatusLine().getStatusCode() != 200) {
 			getStatus(uri, response);
 		} else {

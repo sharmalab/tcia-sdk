@@ -1,7 +1,7 @@
 package edu.emory.cci.tcia.client;
 
 /**
- * The attributes defined for DICOM
+ * The attributes defined for TCIA/DICOM
  */
 public class DICOMAttributes {
 	public static final String COLLECTION = "Collection";

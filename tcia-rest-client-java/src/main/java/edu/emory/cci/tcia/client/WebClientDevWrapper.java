@@ -23,6 +23,11 @@ public class WebClientDevWrapper {
 
 	private static Logger logger = LogManager.getLogger(WebClientDevWrapper.class.getName());
 
+	/**
+	 * Wrap the HTTP client
+	 * @param base input HTTP client object
+	 * @return output HTTP client object
+	 */
 	public static HttpClient wrapClient(HttpClient base) {
 		try {
 			SSLContext ctx = SSLContext.getInstance("TLS");

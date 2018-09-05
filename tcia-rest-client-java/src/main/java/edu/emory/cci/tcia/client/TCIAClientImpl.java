@@ -4,17 +4,14 @@ import java.io.InputStream;
 import java.net.URI;
 
 import edu.emory.cci.tcia.client.util.ImageResult;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
-import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getImageResult;
-import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getRawData;
-
 import edu.emory.cci.tcia.client.util.TCIAClientUtil;
+
+import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
+import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getRawData;
 
 /**
  * The core class of the TCIA Client implementation
@@ -34,8 +31,6 @@ public class TCIAClientImpl implements ITCIAClient {
 
 
 
-
-
 	/**
 	 * The default constructor of the TCIA Client
 	 */
@@ -50,8 +45,8 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the modality values
-	 * @param collection the collection name
-	 * @param bodyPartExamined the body part examined
+	 * @param collection the collection name : optional
+ 	 * @param bodyPartExamined the body part examined : optional
 	 * @param format the format
 	 * @return the modality values
 	 * @throws TCIAClientException if the execution fails
@@ -83,6 +78,15 @@ public class TCIAClientImpl implements ITCIAClient {
 	}
 
 
+	/**
+	 * Get the manufacturer Values
+	 * @param collection the name of the collection : optional
+	 * @param bodyPartExamined the examined body part : optional
+	 * @param modality the modality : optional
+	 * @param format the format
+	 * @return the manufacturer values
+	 * @throws TCIAClientException if the execution failed
+	 */
 	public String getManufacturerValues(String collection,
 	                                    String bodyPartExamined, String modality, OutputFormat format)
 			throws TCIAClientException {
@@ -112,6 +116,12 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
+	/**
+	 * Get the values of the collections
+	 * @param format the format to return the output
+	 * @return the collection values
+	 * @throws TCIAClientException, if the execution failed.
+	 */
 	public String getCollectionValues(OutputFormat format)
 			throws TCIAClientException {
 		try {
@@ -130,6 +140,14 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
+	/**
+	 * Get the body part values
+	 * @param collection the name of the collection : optional
+	 * @param modality the modality : optional
+	 * @param format the output format
+	 * @return the body part values
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public String getBodyPartValues(String collection, String modality, OutputFormat format) throws TCIAClientException {
 		try {
 			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
@@ -155,6 +173,15 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	}
 
+	/**
+	 * Get the relevant patient studies
+	 * @param collection the collection name : optional
+	 * @param patientID the ID of the patient : optional
+	 * @param studyInstanceUID the UID of the study instance : optional
+	 * @param format the output format
+	 * @return the patient study
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public String getPatientStudy(String collection, String patientID,
 	                              String studyInstanceUID, OutputFormat format)
 			throws TCIAClientException {
@@ -184,6 +211,20 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
+	/**
+	 * Get the series
+	 * @param collection the collection name : optional
+	 * @param studyInstanceUID the UID of the study instance : optional
+ 	 * @param modality the modality : optional
+	 * @param patientID ID of the patient : optional
+	 * @param seriesInstanceUID UID of the series instance : optional
+ 	 * @param bodyPartExamined the examined body part : optional
+ 	 * @param manufacturer name of the manufacturer : optional
+	 * @param manufacturerModelName the model of the manufacturer : optional
+	 * @param format the output format
+	 * @return the series
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public String getSeries(String collection, String studyInstanceUID, String modality, String patientID,
 	                        String seriesInstanceUID, String bodyPartExamined, String manufacturer,
 	                        String manufacturerModelName, OutputFormat format)
@@ -234,6 +275,13 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
+	/**
+	 * Get the patients
+	 * @param collection, the collection name : optional
+	 * @param format, the output format
+	 * @return the patients
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public String getPatient(String collection, OutputFormat format)
 			throws TCIAClientException {
 		try {
@@ -257,6 +305,13 @@ public class TCIAClientImpl implements ITCIAClient {
 	}
 
 
+	/**
+	 * Get the size of the given series
+	 * @param seriesInstanceUID : UID of the series instance : mandatory
+	 * @param format, the output format
+	 * @return the size of the series
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
 		try {
 			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
@@ -279,6 +334,12 @@ public class TCIAClientImpl implements ITCIAClient {
 	}
 
 
+	/**
+	 * Get a zip of matching images
+	 * @param seriesInstanceUID, the UID of the series instance. : mandatory
+	 * @return the zip of images
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public ImageResult getImage(String seriesInstanceUID)
 			throws TCIAClientException {
 		try {
@@ -298,6 +359,13 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
+	/**
+	 * Get a single image
+	 * @param seriesInstanceUID, the UID of the series instance. : mandatory
+	 * @param sopInstanceUID, the UID of the Service-Object Pair (SOP). : mandatory
+	 * @return the single image
+	 * @throws TCIAClientException, if the execution failed
+	 */
 	public ImageResult getSingleImage(String seriesInstanceUID, String sopInstanceUID)
 			throws TCIAClientException {
 		try {

@@ -2,6 +2,9 @@ package edu.emory.cci.tcia.client.util;
 
 import java.io.InputStream;
 
+/**
+ * The ImageResult class for the getImage methods.
+ */
 public class ImageResult {
 	private InputStream rawData;
 	private Integer imageCount;

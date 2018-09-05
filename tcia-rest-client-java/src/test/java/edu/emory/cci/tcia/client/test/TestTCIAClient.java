@@ -28,10 +28,9 @@ public class TestTCIAClient {
 
 
 	/**
-	 *  Method : GetCollectionValues
-	 *  Description : Returns  set of all collection values
+	 *  Method: GetCollectionValues
+	 *  Description: Returns  set of all collection values
 	 */
-	
 	@Test
 	public void testGetCollectionValues()
 	{
@@ -54,10 +53,9 @@ public class TestTCIAClient {
 	}
 	
 	/**
-	 *  Method : GetImage
-	 *  Description : Returns images in a zip file
+	 *  Method: GetImage
+	 *  Description: Returns images in a zip file
 	 */
-	
 	@Test
 	public void testGetImage()
 	{
@@ -81,10 +79,9 @@ public class TestTCIAClient {
 
 
 	/**
-	 *  Method : GetSingleImage
-	 *  Description : Returns an image in a zip file
+	 *  Method: GetSingleImage
+	 *  Description: Returns an image in a zip file
 	 */
-
 	@Test
 	public void testGetSingleImage()
 	{
@@ -107,6 +104,10 @@ public class TestTCIAClient {
 		}
 	}
 
+	/**
+	 * Method: GetSeries
+	 * Description: Returns the matching series
+	 */
 	@Test
 	public void testGetSeries()
 	{
@@ -139,7 +140,11 @@ public class TestTCIAClient {
 
 	}
 
-	
+
+	/**
+	 * Method: Get Patient Study
+	 * Description: Returns the matching patient studies
+	 */
 	@Test
 	public void testGetPatientStudy()
 	{
@@ -165,6 +170,10 @@ public class TestTCIAClient {
 
 	}
 
+	/**
+	 * Method: Get Patient
+	 * Description: Returns the matching patients
+	 */
 	@Test
 	public void testGetPatient()
 	{
@@ -188,7 +197,11 @@ public class TestTCIAClient {
 		}
 
 	}
-	
+
+	/**
+	 * Method: Get Body Part Values
+	 * Description: Return the set of body part values
+	 */
 	@Test
 	public void testGetBodyPartValues()
 	{
@@ -213,7 +226,11 @@ public class TestTCIAClient {
 		}
 
 	}
-	
+
+	/**
+	 * Method: Get Modality Values
+	 * Description: Return the set of modality values.
+	 */
 	@Test
 	public void testGetModalityValues()
 	{
@@ -238,7 +255,11 @@ public class TestTCIAClient {
 		}
 
 	}
-	
+
+	/**
+	 * Method: Get Manufacturer Values
+	 * Description: Returns the manufacturers.
+	 */
 	@Test
 	public void testGetManufacturerValues()
 	{
