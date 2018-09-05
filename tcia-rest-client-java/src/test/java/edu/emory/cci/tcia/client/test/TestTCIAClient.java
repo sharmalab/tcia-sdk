@@ -45,7 +45,7 @@ public class TestTCIAClient {
 			logger.info("[GET COLLECTION VALUES]");
 			// Print server response
 			logger.info(respJSON);
-			
+
 		} catch (TCIAClientException e) {
 				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
@@ -77,9 +77,35 @@ public class TestTCIAClient {
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
-
 	}
-	
+
+
+	/**
+	 *  Method : GetSingleImage
+	 *  Description : Returns an image in a zip file
+	 */
+
+	@Test
+	public void testGetSingleImage()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String sopInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.254637948180506182312529390348";
+		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440";
+		try {
+			logger.info("[GET SINGLE IMAGE]");
+			// Make the RESTfull call . Response comes back as InputStream.
+			ImageResult imageResult = client.getSingleImage(seriesInstanceUID, sopInstanceUID);
+			double averageDICOMFileSize = 200 * 1024d ; // 200KB
+			double compressionRatio = 0.75 ; // approx
+			int estimatedFileSize = (int) (averageDICOMFileSize * compressionRatio * imageResult.getImageCount());
+			saveTo(imageResult.getRawData(),  seriesInstanceUID + ".zip", ".", estimatedFileSize);
+
+		} catch (TCIAClientException e) {
+			fail(e.getMessage()); // request failed
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
+	}
 
 	@Test
 	public void testGetSeries()

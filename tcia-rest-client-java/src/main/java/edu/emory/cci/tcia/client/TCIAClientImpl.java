@@ -109,17 +109,7 @@ public class TCIAClientImpl implements ITCIAClient {
 		if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
 		// error
 		{
-			if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
-			{
-				throw new TCIAClientException(uri.toString(),
-						"Unauthorized access");
-			} else if (response.getStatusLine().getStatusCode() == 404) {
-				throw new TCIAClientException(uri.toString(),
-						"Resource not found");
-			} else {
-				throw new TCIAClientException(uri.toString(), "Server Error : "
-						+ response.getStatusLine().getReasonPhrase());
-			}
+			return getStatus(uri, response);
 
 		} else {
 			HttpEntity entity = response.getEntity();
@@ -128,6 +118,20 @@ public class TCIAClientImpl implements ITCIAClient {
 			} else {
 				throw new TCIAClientException(RESOURCE_URL, "No Content");
 			}
+		}
+	}
+
+	private InputStream getStatus(URI uri, HttpResponse response) throws TCIAClientException {
+		if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
+		{
+			throw new TCIAClientException(uri.toString(),
+					"Unauthorized access");
+		} else if (response.getStatusLine().getStatusCode() == 404) {
+			throw new TCIAClientException(uri.toString(),
+					"Resource not found");
+		} else {
+			throw new TCIAClientException(uri.toString(), "Server Error : "
+					+ response.getStatusLine().getReasonPhrase());
 		}
 	}
 
@@ -325,32 +329,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			long diff = System.currentTimeMillis() - startTime;
 
 			logger.info("Server Response Received in " + diff + " ms");
-			if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
-			// error
-			{
-				if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
-				{
-					throw new TCIAClientException(uri.toString(),
-							"Unauthorized access");
-				} else if (response.getStatusLine().getStatusCode() == 404) {
-					throw new TCIAClientException(uri.toString(),
-							"Resource not found");
-				} else {
-					throw new TCIAClientException(uri.toString(), "Server Error : "
-							+ response.getStatusLine().getReasonPhrase());
-				}
-
-			} else {
-				HttpEntity entity = response.getEntity();
-				if (entity != null && entity.getContent() != null) {
-					ImageResult imageResult = new ImageResult();
-					imageResult.setRawData(entity.getContent());
-					imageResult.setImageCount(Integer.parseInt(response.getFirstHeader("imageCount").getValue()));
-					return imageResult;
-				} else {
-					throw new TCIAClientException(RESOURCE_URL, "No Content");
-				}
-			}
+			return getImageResult(uri, response);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -359,9 +338,55 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public ImageResult getSingleImage(String seriesInstanceUID) throws TCIAClientException {
+	private ImageResult getImageResult(URI uri, HttpResponse response) throws TCIAClientException, IOException {
+		if (response.getStatusLine().getStatusCode() != 200) {
+			getStatus(uri, response);
+		} else {
+			HttpEntity entity = response.getEntity();
+			if (entity != null && entity.getContent() != null) {
+				ImageResult imageResult = new ImageResult();
+				imageResult.setRawData(entity.getContent());
+				imageResult.setImageCount(Integer.parseInt(response.getFirstHeader("imageCount").getValue()));
+				return imageResult;
+			} else {
+				throw new TCIAClientException(RESOURCE_URL, "No Content");
+			}
+		}
 		return null;
 	}
+
+	public ImageResult getSingleImage(String seriesInstanceUID, String sopInstanceUID)
+			throws TCIAClientException {
+		try {
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getImage);
+
+			if (seriesInstanceUID != null)
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
+
+			if (sopInstanceUID != null)
+				uriBuilder.addParameter(DICOMAttributes.SOP_INSTANCE_UID, sopInstanceUID);
+
+			URI uri = uriBuilder.build();
+			// create a new HttpGet request
+			HttpGet request = new HttpGet(uri);
+
+			// add api_key to the header
+			request.setHeader(AUTHORIZATION_HEADER, authValue);
+			long startTime = System.currentTimeMillis();
+			HttpResponse response = httpClient.execute(request);
+			long diff = System.currentTimeMillis() - startTime;
+
+			logger.info("Server Response Received in " + diff + " ms");
+			return getImageResult(uri, response);
+
+		} catch (TCIAClientException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
+		}
+	}
+
 
 	public String NewStudiesInPatientCollection(String collection, OutputFormat format) throws TCIAClientException {
 		return null;
