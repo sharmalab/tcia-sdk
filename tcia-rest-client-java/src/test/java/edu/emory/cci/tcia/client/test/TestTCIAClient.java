@@ -40,14 +40,11 @@ public class TestTCIAClient {
 		
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
-			String respXML = client.getCollectionValues(OutputFormat.xml);
 			String respJSON = client.getCollectionValues(OutputFormat.json);
-			String respCSV = client.getCollectionValues(OutputFormat.csv);
-			
+
+			logger.info("[GET COLLECTION VALUES]");
 			// Print server response
-			logger.info(respXML);
 			logger.info(respJSON);
-			logger.info(respCSV);
 			
 		} catch (TCIAClientException e) {
 				fail(e.getMessage()); // request failed
@@ -67,6 +64,7 @@ public class TestTCIAClient {
 		ITCIAClient client = new TCIAClientImpl();
 		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440";
 		try {
+			logger.info("[GET IMAGE]");
 			// Make the RESTfull call . Response comes back as InputStream. 
 			ImageResult imageResult = client.getImage(seriesInstanceUID);
 			double averageDICOMFileSize = 200 * 1024d ; // 200KB
@@ -88,14 +86,21 @@ public class TestTCIAClient {
 	{
 		ITCIAClient client = new TCIAClientImpl();
 		String collection = "TCGA-GBM"; // optional
+		String studyInstanceUID = null; // "1.3.6.1.4.1.14519.5.2.1.7695.4001.130563880911723253267280582465"; // optional
 		String modality = "MR"; // optional
-		String studyInstanceUID = null; // optional
-		
+		String patientID = null; // "TCGA-08-0244"; // optional
+		String seriesInstanceUID = null; //"1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440"; // optional
+		String bodyPartExamined = null; // "BRAIN"; // optional
+		String manufacturer = "GE MEDICAL SYSTEMS"; // optional
+		String manufacturerModelName = "GENESIS_SIGNA"; //optional
+
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
-			String respJSON = client.getSeries(collection, modality, studyInstanceUID, OutputFormat.json);
-			
-			
+			String respJSON = client.getSeries(collection, studyInstanceUID, modality, patientID, seriesInstanceUID,
+					bodyPartExamined, manufacturer, manufacturerModelName, OutputFormat.json);
+
+			logger.info("[GET SERIES]");
+
 			// Print server response
 			logger.info(respJSON);
 			
@@ -114,13 +119,14 @@ public class TestTCIAClient {
 	{
 		ITCIAClient client = new TCIAClientImpl();
 		String collection = "TCGA-GBM"; // optional
-		String patientID = null; // optional
-		String studyInstanceUID = null; // optional
+		String patientID = "TCGA-08-0244"; // optional
+		String studyInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.130563880911723253267280582465"; // optional
 		
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
 			String respJSON = client.getPatientStudy(collection, patientID, studyInstanceUID, OutputFormat.json);
-			
+
+			logger.info("[GET PATIENT STUDY]");
 			// Print server response
 			logger.info(respJSON);
 			
@@ -142,7 +148,9 @@ public class TestTCIAClient {
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
 			String respJSON = client.getPatient(collection , OutputFormat.json);
-			
+
+			logger.info("[GET PATIENT]");
+
 			// Print server response
 			logger.info(respJSON);
 			
@@ -159,14 +167,15 @@ public class TestTCIAClient {
 	public void testGetBodyPartValues()
 	{
 		ITCIAClient client = new TCIAClientImpl();
-		String collection = null ; // optional
-		String bodyPartExamined = null; // optional
+		String collection = "TCGA-GBM" ; // optional
 		String modality = "MR"; // optional
 		
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
 			String respJSON = client.getBodyPartValues(collection, modality, OutputFormat.json);
-			
+
+			logger.info("[GET BODY PART VALUES]");
+
 			// Print server response
 			logger.info(respJSON);
 			
@@ -183,13 +192,15 @@ public class TestTCIAClient {
 	public void testGetModalityValues()
 	{
 		ITCIAClient client = new TCIAClientImpl();
-		String collection = null ; // optional
+		String collection = "TCGA-GBM" ; // optional
 		String bodyPartExamined = "BRAIN"; // optional
 
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
 			String respJSON = client.getModalityValues(collection, bodyPartExamined, OutputFormat.json);
-			
+
+			logger.info("[GET MODALITY VALUES]");
+
 			// Print server response
 			logger.info(respJSON);
 			
@@ -206,14 +217,16 @@ public class TestTCIAClient {
 	public void testGetManufacturerValues()
 	{
 		ITCIAClient client = new TCIAClientImpl();
-		String collection = null ; // optional
+		String collection = "TCGA-GBM" ; // optional
 		String bodyPartExamined = "BRAIN"; // optional
 		String modality = "MR"; // optional
 		
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
 			String respJSON = client.getManufacturerValues(collection, bodyPartExamined, modality, OutputFormat.json);
-			
+
+			logger.info("[GET MANUFACTURER VALUES]");
+
 			// Print server response
 			logger.info(respJSON);
 			
@@ -226,8 +239,6 @@ public class TestTCIAClient {
 
 	}
 
-	
-	
 	
 	
 	private static void saveTo(InputStream in, String name, String directory, int estimatedBytes) throws IOException

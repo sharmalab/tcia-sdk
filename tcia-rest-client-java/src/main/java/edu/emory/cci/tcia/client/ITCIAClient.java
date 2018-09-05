@@ -12,7 +12,9 @@ public interface ITCIAClient {
 	public String getBodyPartValues(String collection, String modality, OutputFormat format) throws TCIAClientException;
 	public String getPatientStudy(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 
-	public String getSeries(String collection, String modality, String studyInstanceUID, OutputFormat format) throws TCIAClientException;
+	public String getSeries(String collection, String studyInstanceUID, String modality, String patientID,
+	                        String seriesInstanceUID, String bodyPartExamined, String manufacturer,
+	                        String manufacturerModelName, OutputFormat format) throws TCIAClientException;
 
 	public String getPatient(String collection, OutputFormat format) throws TCIAClientException;
 	public ImageResult getImage(String seriesInstanceUID) throws TCIAClientException;

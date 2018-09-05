@@ -232,8 +232,9 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public String getSeries(String collection, String modality,
-	                        String studyInstanceUID, OutputFormat format)
+	public String getSeries(String collection, String studyInstanceUID, String modality, String patientID,
+	                        String seriesInstanceUID, String bodyPartExamined, String manufacturer,
+	                        String manufacturerModelName, OutputFormat format)
 			throws TCIAClientException {
 		try {
 			URI baseUri = new URI(RESOURCE_URL);
@@ -242,14 +243,34 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
-			if (modality != null)
-				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
-
 			if (studyInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.STUDY_INSTANCE_UID, studyInstanceUID);
 
-			uriBuilder.addParameter("format", format.name());
+			if (modality != null) {
+				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
+			}
 
+			if (patientID != null) {
+				uriBuilder.addParameter(DICOMAttributes.PATIENT_ID, patientID);
+			}
+
+			if (seriesInstanceUID != null) {
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
+			}
+
+			if (bodyPartExamined != null) {
+				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
+			}
+
+			if (manufacturer != null) {
+				uriBuilder.addParameter(DICOMAttributes.MANUFACTURER, manufacturer);
+			}
+
+			if (manufacturerModelName != null) {
+				uriBuilder.addParameter(DICOMAttributes.MANUFACTURER_MODEL_NAME, manufacturerModelName);
+			}
+
+			uriBuilder.addParameter("format", format.name());
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
