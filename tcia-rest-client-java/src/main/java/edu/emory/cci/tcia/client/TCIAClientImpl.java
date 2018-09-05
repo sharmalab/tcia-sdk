@@ -178,17 +178,13 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public String getBodyPartValues(String collection, String bodyPartExamined,
-	                                String modality, OutputFormat format) throws TCIAClientException {
+	public String getBodyPartValues(String collection, String modality, OutputFormat format) throws TCIAClientException {
 		try {
 			URI baseUri = new URI(RESOURCE_URL);
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getBodyPartValues);
 
 			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-
-			if (bodyPartExamined != null)
-				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
 
 			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);

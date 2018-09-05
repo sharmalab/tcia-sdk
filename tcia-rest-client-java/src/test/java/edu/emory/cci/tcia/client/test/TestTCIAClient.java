@@ -165,7 +165,7 @@ public class TestTCIAClient {
 		
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
-			String respJSON = client.getBodyPartValues(collection, bodyPartExamined, modality, OutputFormat.json);
+			String respJSON = client.getBodyPartValues(collection, modality, OutputFormat.json);
 			
 			// Print server response
 			logger.info(respJSON);
