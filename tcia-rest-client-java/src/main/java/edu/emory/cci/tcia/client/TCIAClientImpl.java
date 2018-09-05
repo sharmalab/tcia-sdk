@@ -26,6 +26,7 @@ public class TCIAClientImpl implements ITCIAClient {
 	private static String getBodyPartValues = "getBodyPartValues";
 	private static String getPatientStudy = "getPatientStudy";
 	private static String getSeries = "getSeries";
+	private static String getSeriesSize = "getSeriesSize";
 	private static String getPatient = "getPatient";
 	private static String getSingleImage = "getSingleImage";
 
@@ -315,7 +316,7 @@ public class TCIAClientImpl implements ITCIAClient {
 	public String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
 		try {
 			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
-			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getPatient);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSeriesSize);
 
 			if (seriesInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);

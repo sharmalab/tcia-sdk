@@ -142,6 +142,34 @@ public class TestTCIAClient {
 
 
 	/**
+	 * Method: Get Series Size
+	 * Description: Returns the size of the series
+	 */
+	@Test
+	public void testGetSeriesSize()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.647661854224310142997732034117";
+
+		try {
+			// Make the RESTfull call . Response comes back as InputStream.
+			String respJSON = client.getSeriesSize(seriesInstanceUID, OutputFormat.json);
+			logger.info("[GET SERIES SIZE]");
+
+			// Print server response
+			logger.info(respJSON);
+
+
+		} catch (TCIAClientException e) {
+				fail(e.getMessage()); // request failed
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
+
+	}
+
+
+	/**
 	 * Method: Get Patient Study
 	 * Description: Returns the matching patient studies
 	 */
