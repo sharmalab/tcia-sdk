@@ -1,5 +1,8 @@
 package edu.emory.cci.tcia.client.conf;
 
+/**
+ * Configurations read from the conf file.
+ */
 public class TCIAConf {
 	private String authheader;
 	private String authflag;

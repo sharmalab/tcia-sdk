@@ -1,5 +1,8 @@
 package edu.emory.cci.tcia.client;
 
+/**
+ * The TCIA Client Exception
+ */
 public class TCIAClientException extends Exception {
 
 	private static final long serialVersionUID = -2548423882689490254L;

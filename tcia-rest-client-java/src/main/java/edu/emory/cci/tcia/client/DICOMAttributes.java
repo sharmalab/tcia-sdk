@@ -1,5 +1,8 @@
 package edu.emory.cci.tcia.client;
 
+/**
+ * The attributes defined for DICOM
+ */
 public class DICOMAttributes {
 	public static final String COLLECTION = "Collection";
 	public static final String PATIENT_ID = "PatientID";

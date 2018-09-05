@@ -16,10 +16,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Base64;
 
 public class TCIAClientImpl implements ITCIAClient {
+	private static Logger logger = LogManager.getLogger(TCIAClientImpl.class.getName());
 
 	private String apiKey;
 	private HttpClient httpClient;
@@ -38,9 +41,11 @@ public class TCIAClientImpl implements ITCIAClient {
 	private static String RESOURCE_URL;
 
 
+	/**
+	 * Initialize the configuration parameters based on the values presented in the configuration file.
+	 */
 	private void init() {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-
 		try {
 			TCIAConf tciaConf = mapper.readValue(new File(TCIAConstants.TCIA_CONF_FILE), TCIAConf.class);
 
@@ -53,9 +58,8 @@ public class TCIAClientImpl implements ITCIAClient {
 			String encodedBytes = Base64.getEncoder().encodeToString(authString.getBytes());
 			authValue = AUTHORIZATION_FLAG + " " + encodedBytes;
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Exception in initializing the TCIA Client", e);
 		}
-
 	}
 
 	public TCIAClientImpl() {
@@ -64,7 +68,7 @@ public class TCIAClientImpl implements ITCIAClient {
 		init();
 	}
 
-	static String convertStreamToString(java.io.InputStream is) {
+	private static String convertStreamToString(java.io.InputStream is) {
 		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
 		return s.hasNext() ? s.next() : "";
 	}
@@ -306,7 +310,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			HttpResponse response = httpClient.execute(request);
 			long diff = System.currentTimeMillis() - startTime;
 
-			System.out.println("Server Response Received in " + diff + " ms");
+			logger.info("Server Response Received in " + diff + " ms");
 			if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
 			// error
 			{
@@ -368,6 +372,4 @@ public class TCIAClientImpl implements ITCIAClient {
 	public String getSharedList(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
 		return null;
 	}
-
-
 }

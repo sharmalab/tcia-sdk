@@ -6,6 +6,8 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -13,10 +15,13 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-/*
-This code is public domain: you are free to use, link and/or modify it in any way you want, for all purposes including commercial applications.
-*/
+
+/**
+ * The wrapper class to fix the SSL issues.
+ */
 public class WebClientDevWrapper {
+
+	private static Logger logger = LogManager.getLogger(WebClientDevWrapper.class.getName());
 
 	public static HttpClient wrapClient(HttpClient base) {
 		try {
@@ -41,7 +46,7 @@ public class WebClientDevWrapper {
 			sr.register(new Scheme("https", ssf, 443));
 			return new DefaultHttpClient(ccm, base.getParams());
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error("Web Client Dev Wrapper Exception", ex);
 			return null;
 		}
 	}

@@ -2,11 +2,12 @@ package edu.emory.cci.tcia.client.test;
 
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import edu.emory.cci.tcia.client.ITCIAClient;
@@ -17,11 +18,13 @@ import edu.emory.cci.tcia.client.TCIAClientImpl;
 
 
 
-
 /**
+ * The core Test class to test the TCIA functionality with sample values, as JUnit tests.
  *  Refer https://wiki.cancerimagingarchive.net/display/Public/TCIA+Programmatic+Interface+%28REST+API%29+Usage+Guide
  */
 public class TestTCIAClient {
+
+	private static Logger logger = LogManager.getLogger(TestTCIAClient.class.getName());
 
 
 	/**
@@ -42,9 +45,9 @@ public class TestTCIAClient {
 			String respCSV = client.getCollectionValues(OutputFormat.csv);
 			
 			// Print server response
-			System.out.println(respXML);
-			System.out.println(respJSON);
-			System.out.println(respCSV);
+			logger.info(respXML);
+			logger.info(respJSON);
+			logger.info(respCSV);
 			
 		} catch (TCIAClientException e) {
 				fail(e.getMessage()); // request failed
@@ -94,7 +97,7 @@ public class TestTCIAClient {
 			
 			
 			// Print server response
-			System.out.println(respJSON);
+			logger.info(respJSON);
 			
 			
 		} catch (TCIAClientException e) {
@@ -119,7 +122,7 @@ public class TestTCIAClient {
 			String respJSON = client.getPatientStudy(collection, patientID, studyInstanceUID, OutputFormat.json);
 			
 			// Print server response
-			System.out.println(respJSON);
+			logger.info(respJSON);
 			
 			
 		} catch (TCIAClientException e) {
@@ -141,7 +144,7 @@ public class TestTCIAClient {
 			String respJSON = client.getPatient(collection , OutputFormat.json);
 			
 			// Print server response
-			System.out.println(respJSON);
+			logger.info(respJSON);
 			
 			
 		} catch (TCIAClientException e) {
@@ -165,7 +168,7 @@ public class TestTCIAClient {
 			String respJSON = client.getBodyPartValues(collection, bodyPartExamined, modality, OutputFormat.json);
 			
 			// Print server response
-			System.out.println(respJSON);
+			logger.info(respJSON);
 			
 			
 		} catch (TCIAClientException e) {
@@ -189,7 +192,7 @@ public class TestTCIAClient {
 			String respJSON = client.getModalityValues(collection, bodyPartExamined, modality, OutputFormat.json);
 			
 			// Print server response
-			System.out.println(respJSON);
+			logger.info(respJSON);
 			
 			
 		} catch (TCIAClientException e) {
@@ -213,7 +216,7 @@ public class TestTCIAClient {
 			String respJSON = client.getManufacturerValues(collection, bodyPartExamined, modality, OutputFormat.json);
 			
 			// Print server response
-			System.out.println(respJSON);
+			logger.info(respJSON);
 			
 			
 		} catch (TCIAClientException e) {
@@ -242,7 +245,7 @@ public class TestTCIAClient {
 			
 			if(mseconds % 10 == 0)
 			{
-				System.out.println(String.format("Bytes Written %s out of estimated %s  : " , sum , estimatedBytes));
+				logger.info(String.format("Bytes Written %s out of estimated %s  : " , sum , estimatedBytes));
 			}
 		}
 		
