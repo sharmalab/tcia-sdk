@@ -10,6 +10,16 @@ import org.apache.logging.log4j.Logger;
 
 import edu.emory.cci.tcia.client.util.TCIAClientUtil;
 
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getBodyPartValues;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getCollectionValues;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getImage;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getManufacturerValues;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getModalityValues;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getPatient;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getPatientStudy;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSeries;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSeriesSize;
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSingleImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getRawData;
 
@@ -18,19 +28,6 @@ import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getRawData;
  */
 public class TCIAClientImpl implements ITCIAClient {
 	private static Logger logger = LogManager.getLogger(TCIAClientImpl.class.getName());
-
-	private static String getImage = "getImage";
-	private static String getManufacturerValues = "getManufacturerValues";
-	private static String getModalityValues = "getModalityValues";
-	private static String getCollectionValues = "getCollectionValues";
-	private static String getBodyPartValues = "getBodyPartValues";
-	private static String getPatientStudy = "getPatientStudy";
-	private static String getSeries = "getSeries";
-	private static String getSeriesSize = "getSeriesSize";
-	private static String getPatient = "getPatient";
-	private static String getSingleImage = "getSingleImage";
-
-
 
 	/**
 	 * The default constructor of the TCIA Client
