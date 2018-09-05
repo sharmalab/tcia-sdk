@@ -2,3 +2,5 @@ authheader: Authorization
 authflag: ldap
 username: myusername
 password: mypassword
+baseurl: http://api.cancerimagingarchive.net
+resource: /radiology

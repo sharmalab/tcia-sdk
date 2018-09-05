@@ -19,11 +19,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.util.Base64;
 
-public class TCIAClientImpl implements ITCIAClient{
+public class TCIAClientImpl implements ITCIAClient {
 
 	private String apiKey;
-	private HttpClient httpClient ;
-	private String baseUrl ;
+	private HttpClient httpClient;
 	private static String getImage = "getImage";
 	private static String getManufacturerValues = "getManufacturerValues";
 	private static String getModalityValues = "getModalityValues";
@@ -35,79 +34,71 @@ public class TCIAClientImpl implements ITCIAClient{
 
 
 	private String authValue;
-	private static String AUTHORIZATION_HEADER = null;
-	private static String AUTHORIZATION_FLAG = null;
+	private static String AUTHORIZATION_HEADER;
+	private static String RESOURCE_URL;
 
-	
-	public TCIAClientImpl(String apiKey, String baseUrl)
-	{
-		this.apiKey = apiKey;
-		this.baseUrl = baseUrl;
-		httpClient = new DefaultHttpClient();
-		httpClient = WebClientDevWrapper.wrapClient(httpClient);
 
+	private void init() {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
 		try {
 			TCIAConf tciaConf = mapper.readValue(new File(TCIAConstants.TCIA_CONF_FILE), TCIAConf.class);
 
-			if (AUTHORIZATION_HEADER == null) {
-				AUTHORIZATION_HEADER = tciaConf.getAuthheader();
-			}
+			AUTHORIZATION_HEADER = tciaConf.getAuthheader();
+			String AUTHORIZATION_FLAG = tciaConf.getAuthflag();
 
-			if (AUTHORIZATION_FLAG == null) {
-				AUTHORIZATION_FLAG = tciaConf.getAuthflag();
-			}
+			RESOURCE_URL = tciaConf.getBaseurl() + tciaConf.getResource();
 
 			String authString = tciaConf.getUsername() + TCIAConstants.AUTH_SEPARATOR + tciaConf.getPassword();
 			String encodedBytes = Base64.getEncoder().encodeToString(authString.getBytes());
 			authValue = AUTHORIZATION_FLAG + " " + encodedBytes;
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	static String convertStreamToString(java.io.InputStream is) {
-	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-	    return s.hasNext() ? s.next() : "";
+
+	public TCIAClientImpl() {
+		httpClient = new DefaultHttpClient();
+		httpClient = WebClientDevWrapper.wrapClient(httpClient);
+		init();
 	}
-	
+
+	static String convertStreamToString(java.io.InputStream is) {
+		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
+	}
+
 	public String getModalityValues(String collection, String bodyPartExamined,
-			String modality, OutputFormat format) throws TCIAClientException {
+	                                String modality, OutputFormat format) throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getModalityValues);
-			
-			if(collection!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getModalityValues);
+
+			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-			
-			if(bodyPartExamined!=null)
+
+			if (bodyPartExamined != null)
 				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
-			
-			if(modality!=null)
+
+			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
-			
+
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 
 	}
-	
-	private InputStream getRawData(URI uri) throws TCIAClientException, ClientProtocolException, IOException
-	{
+
+	private InputStream getRawData(URI uri) throws TCIAClientException, ClientProtocolException, IOException {
 		// create a new HttpGet request
 		HttpGet request = new HttpGet(uri);
 
@@ -115,7 +106,7 @@ public class TCIAClientImpl implements ITCIAClient{
 		request.setHeader(AUTHORIZATION_HEADER, authValue);
 		HttpResponse response = httpClient.execute(request);
 		if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
-																// error
+		// error
 		{
 			if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
 			{
@@ -134,185 +125,177 @@ public class TCIAClientImpl implements ITCIAClient{
 			if (entity != null && entity.getContent() != null) {
 				return entity.getContent();
 			} else {
-				throw new TCIAClientException(baseUrl, "No Content");
+				throw new TCIAClientException(RESOURCE_URL, "No Content");
 			}
 		}
 	}
-	
+
 	public String getManufacturerValues(String collection,
-			String bodyPartExamined, String modality, OutputFormat format)
+	                                    String bodyPartExamined, String modality, OutputFormat format)
 			throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getManufacturerValues);
-			
-			if(collection!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getManufacturerValues);
+
+			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-			
-			if(bodyPartExamined!=null)
+
+			if (bodyPartExamined != null)
 				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
-			
-			if(modality!=null)
+
+			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
-			
+
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 	}
+
 	public String getCollectionValues(OutputFormat format)
 			throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getCollectionValues);
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getCollectionValues);
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 	}
+
 	public String getBodyPartValues(String collection, String bodyPartExamined,
-			String modality, OutputFormat format) throws TCIAClientException {
+	                                String modality, OutputFormat format) throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getBodyPartValues);
-			
-			if(collection!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getBodyPartValues);
+
+			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-			
-			if(bodyPartExamined!=null)
+
+			if (bodyPartExamined != null)
 				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
-			
-			if(modality!=null)
+
+			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
-			
+
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
-		}
-		
+
 	}
+
 	public String getPatientStudy(String collection, String patientID,
-			String studyInstanceUID, OutputFormat format)
+	                              String studyInstanceUID, OutputFormat format)
 			throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getPatientStudy);
-			
-			if(collection!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getPatientStudy);
+
+			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-			
-			if(patientID!=null)
+
+			if (patientID != null)
 				uriBuilder.addParameter(DICOMAttributes.PATIENT_ID, patientID);
-			
-			if(studyInstanceUID!=null)
+
+			if (studyInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.STUDY_INSTANCE_UID, studyInstanceUID);
-			
+
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 	}
-	
+
 	public String getSeries(String collection, String modality,
-			String studyInstanceUID, OutputFormat format)
+	                        String studyInstanceUID, OutputFormat format)
 			throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getSeries);
-			
-			if(collection!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSeries);
+
+			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-			
-			if(modality!=null)
+
+			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
-			
-			if(studyInstanceUID!=null)
+
+			if (studyInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.STUDY_INSTANCE_UID, studyInstanceUID);
-			
+
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 	}
+
 	public String getPatient(String collection, OutputFormat format)
 			throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getPatient);
-			
-			if(collection!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getPatient);
+
+			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-			
+
 			uriBuilder.addParameter("format", format.name());
-			
+
 			URI uri = uriBuilder.build();
 			InputStream is = getRawData(uri);
 			return convertStreamToString(is);
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 	}
+
 	public ImageResult getImage(String seriesInstanceUID)
 			throws TCIAClientException {
 		try {
-			URI baseUri = new URI(baseUrl);
-			URIBuilder uriBuilder = new URIBuilder( baseUri.toString() + "/" + getImage);
-			
-			if(seriesInstanceUID!=null)
+			URI baseUri = new URI(RESOURCE_URL);
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getImage);
+
+			if (seriesInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
-			
-			
-			
+
+
 			URI uri = uriBuilder.build();
 			// create a new HttpGet request
 			HttpGet request = new HttpGet(uri);
@@ -322,10 +305,10 @@ public class TCIAClientImpl implements ITCIAClient{
 			long startTime = System.currentTimeMillis();
 			HttpResponse response = httpClient.execute(request);
 			long diff = System.currentTimeMillis() - startTime;
-			
+
 			System.out.println("Server Response Received in " + diff + " ms");
 			if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
-																	// error
+			// error
 			{
 				if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
 				{
@@ -347,16 +330,14 @@ public class TCIAClientImpl implements ITCIAClient{
 					imageResult.setImageCount(Integer.parseInt(response.getFirstHeader("imageCount").getValue()));
 					return imageResult;
 				} else {
-					throw new TCIAClientException(baseUrl, "No Content");
+					throw new TCIAClientException(RESOURCE_URL, "No Content");
 				}
 			}
-			
-		} 
-		catch (TCIAClientException e) {
+
+		} catch (TCIAClientException e) {
 			throw e;
-		}
-		catch (Exception e) {
-			throw new TCIAClientException( e , baseUrl); 
+		} catch (Exception e) {
+			throw new TCIAClientException(e, RESOURCE_URL);
 		}
 	}
 

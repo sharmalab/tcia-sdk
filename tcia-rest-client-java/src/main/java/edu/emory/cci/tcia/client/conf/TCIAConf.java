@@ -5,6 +5,24 @@ public class TCIAConf {
 	private String authflag;
 	private String username;
 	private String password;
+	private String baseurl;
+	private String resource;
+
+	public String getBaseurl() {
+		return baseurl;
+	}
+
+	public void setBaseurl(String baseurl) {
+		this.baseurl = baseurl;
+	}
+
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
 
 	public String getAuthheader() {
 		return authheader;

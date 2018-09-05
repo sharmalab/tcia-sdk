@@ -23,10 +23,7 @@ import edu.emory.cci.tcia.client.TCIAClientImpl;
  */
 public class TestTCIAClient {
 
-//    private static String baseUrl = "http://172.20.11.222:8000/radiology"; // Unsecured base URL of the service
-    private static String baseUrl = "http://172.20.11.222:8000/radiology-secured"; // Secured base URL of the service
-	private static String apiKey = "";
-	
+
 	/**
 	 *  Method : GetCollectionValues
 	 *  Description : Returns  set of all collection values
@@ -36,7 +33,7 @@ public class TestTCIAClient {
 	public void testGetCollectionValues()
 	{
 		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
@@ -64,9 +61,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetImage()
 	{
-		
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440";
 		try {
 			// Make the RESTfull call . Response comes back as InputStream. 
@@ -88,8 +83,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetSeries()
 	{
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String collection = "TCGA-GBM"; // optional
 		String modality = "MR"; // optional
 		String studyInstanceUID = null; // optional
@@ -115,8 +109,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetPatientStudy()
 	{
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String collection = "TCGA-GBM"; // optional
 		String patientID = null; // optional
 		String studyInstanceUID = null; // optional
@@ -140,8 +133,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetPatient()
 	{
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String collection = "TCGA-GBM"; // optional
 		
 		try {
@@ -163,8 +155,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetBodyPartValues()
 	{
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String collection = null ; // optional
 		String bodyPartExamined = null; // optional
 		String modality = "MR"; // optional
@@ -188,8 +179,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetModalityValues()
 	{
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String collection = null ; // optional
 		String bodyPartExamined = "BRAIN"; // optional
 		String modality = "MR"; // optional
@@ -213,8 +203,7 @@ public class TestTCIAClient {
 	@Test
 	public void testGetManufacturerValues()
 	{
-		// create TCIA Client by passing API-Key and baseUrl in the constructor
-		ITCIAClient client = new TCIAClientImpl(apiKey , baseUrl);
+		ITCIAClient client = new TCIAClientImpl();
 		String collection = null ; // optional
 		String bodyPartExamined = "BRAIN"; // optional
 		String modality = "MR"; // optional
@@ -239,7 +228,7 @@ public class TestTCIAClient {
 	
 	
 	
-	public static void saveTo(InputStream in , String name , String directory , int estimatedBytes) throws IOException
+	private static void saveTo(InputStream in, String name, String directory, int estimatedBytes) throws IOException
 	{
 		FileOutputStream fos = new FileOutputStream(directory + "/" + name);
 		byte[] buffer = new byte[4096];
@@ -260,20 +249,4 @@ public class TestTCIAClient {
 		fos.close();
 		in.close();
 	}
-	public static String toString(InputStream in) throws IOException
-	{
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		byte[] buffer = new byte[2048];
-		int bytesRead = -1;
-		
-		while((bytesRead = in.read(buffer)) > 0)
-		{
-			baos.write(buffer, 0, bytesRead);
-		}
-		
-		baos.close();
-		return (new String(baos.toByteArray()));
-	}
-	
-
 }
