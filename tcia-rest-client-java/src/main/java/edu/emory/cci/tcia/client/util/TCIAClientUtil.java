@@ -2,6 +2,7 @@ package edu.emory.cci.tcia.client.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import edu.emory.cci.tcia.client.OutputFormat;
 import edu.emory.cci.tcia.client.TCIAClientException;
 import edu.emory.cci.tcia.client.conf.TCIAConf;
 import edu.emory.cci.tcia.client.conf.TCIAConstants;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -61,57 +63,6 @@ public class TCIAClientUtil {
 		}
 	}
 
-	/**
-	 * Get the raw data from the given uri
-	 * @param uri the given uri
-	 * @return an InputStream
-	 * @throws TCIAClientException if the execution fails
-	 * @throws ClientProtocolException an exception at the client protocol.
-	 * @throws IOException an IO exception occurred.
-	 */
-	public static InputStream getRawData(URI uri) throws TCIAClientException, ClientProtocolException, IOException {
-		// create a new HttpGet request
-		HttpGet request = new HttpGet(uri);
-
-		// add api_key to the header
-		request.setHeader(AUTHORIZATION_HEADER, authValue);
-		HttpResponse response = httpClient.execute(request);
-		if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
-		// error
-		{
-			return getStatus(uri, response);
-
-		} else {
-			HttpEntity entity = response.getEntity();
-			if (entity != null && entity.getContent() != null) {
-				return entity.getContent();
-			} else {
-				throw new TCIAClientException(RESOURCE_URL, "No Content");
-			}
-		}
-	}
-
-	private static InputStream getStatus(URI uri, HttpResponse response) throws TCIAClientException {
-		if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
-		{
-			throw new TCIAClientException(uri.toString(),
-					"Unauthorized access");
-		} else if (response.getStatusLine().getStatusCode() == 404) {
-			throw new TCIAClientException(uri.toString(),
-					"Resource not found");
-		} else {
-			throw new TCIAClientException(uri.toString(), "Server Error : "
-					+ response.getStatusLine().getReasonPhrase());
-		}
-	}
-
-	private static String getAuthValue() {
-		return authValue;
-	}
-
-	private static String getAuthorizationHeader() {
-		return AUTHORIZATION_HEADER;
-	}
 
 	/**
 	 * Get the complete url of the resource
@@ -146,6 +97,89 @@ public class TCIAClientUtil {
 		return getImageResult(uri, response);
 	}
 
+
+	/**
+	 * Return a string in a specified output format from a URI Builder object
+	 * @param format the output format
+	 * @param uriBuilder the URI Builder object
+	 * @return the string in the specified output format
+	 * @throws URISyntaxException if the URI syntax is invalid.
+	 * @throws TCIAClientException if the TCIA client throws an error.
+	 * @throws IOException an IO Exception during the execution.
+	 */
+	public static String getStringFromURIBuilder(OutputFormat format, URIBuilder uriBuilder)
+			throws URISyntaxException, TCIAClientException, IOException {
+		uriBuilder.addParameter("format", format.name());
+
+		URI uri = uriBuilder.build();
+		InputStream is = getRawData(uri); // Get the raw data from the given uri
+		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
+	}
+
+
+	/**
+	 * Save the image result object as a file.
+	 * @param imageResult an instance of the ImageResult
+	 * @param name the name of the file to be saved
+	 * @param directory the directory to save the file
+	 * @throws IOException if saving the image result as a file in the specified directory failed.
+	 */
+	public static void saveTo(ImageResult imageResult, String name, String directory) throws IOException
+	{
+		InputStream in = imageResult.getRawData();
+		double averageDICOMFileSize = 200 * 1024d ; // 200KB
+		double compressionRatio = 0.75 ; // approx
+		int estimatedBytes = (int) (averageDICOMFileSize * compressionRatio * imageResult.getImageCount());
+
+		FileOutputStream fos = new FileOutputStream(directory + "/" + name);
+		byte[] buffer = new byte[4096];
+		int read = -1;
+		int sum = 0;
+		while((read = in.read(buffer)) > 0)
+		{
+			fos.write(buffer , 0 , read);
+			long mseconds = System.currentTimeMillis();
+			sum += read;
+
+			if(mseconds % 10 == 0)
+			{
+				logger.info(String.format("Bytes Written %s out of estimated %s  : " , sum , estimatedBytes));
+			}
+		}
+
+		fos.close();
+		in.close();
+	}
+
+
+	/*
+	 * The private utility methods to be used by the public utility methods of this class.
+	 */
+
+	private static InputStream getRawData(URI uri) throws TCIAClientException, ClientProtocolException, IOException {
+		// create a new HttpGet request
+		HttpGet request = new HttpGet(uri);
+
+		// add api_key to the header
+		request.setHeader(AUTHORIZATION_HEADER, authValue);
+		HttpResponse response = httpClient.execute(request);
+		if (response.getStatusLine().getStatusCode() != 200) // TCIA Server
+		// error
+		{
+			return getStatus(uri, response);
+
+		} else {
+			HttpEntity entity = response.getEntity();
+			if (entity != null && entity.getContent() != null) {
+				return entity.getContent();
+			} else {
+				throw new TCIAClientException(RESOURCE_URL, "No Content");
+			}
+		}
+	}
+
+
 	private static ImageResult getImageResult(URI uri, HttpResponse response) throws TCIAClientException, IOException {
 		if (response.getStatusLine().getStatusCode() != 200) {
 			getStatus(uri, response);
@@ -163,4 +197,28 @@ public class TCIAClientUtil {
 		return null;
 	}
 
+
+	private static InputStream getStatus(URI uri, HttpResponse response) throws TCIAClientException {
+		if (response.getStatusLine().getStatusCode() == 401) // Unauthorized
+		{
+			throw new TCIAClientException(uri.toString(),
+					"Unauthorized access");
+		} else if (response.getStatusLine().getStatusCode() == 404) {
+			throw new TCIAClientException(uri.toString(),
+					"Resource not found");
+		} else {
+			throw new TCIAClientException(uri.toString(), "Server Error : "
+					+ response.getStatusLine().getReasonPhrase());
+		}
+	}
+
+
+	private static String getAuthValue() {
+		return authValue;
+	}
+
+
+	private static String getAuthorizationHeader() {
+		return AUTHORIZATION_HEADER;
+	}
 }

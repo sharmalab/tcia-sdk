@@ -1,6 +1,5 @@
 package edu.emory.cci.tcia.client;
 
-import java.io.InputStream;
 import java.net.URI;
 
 import edu.emory.cci.tcia.client.util.ImageResult;
@@ -10,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import edu.emory.cci.tcia.client.util.TCIAClientUtil;
 
+import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.NewStudiesInPatientCollection;
 import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getBodyPartValues;
 import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getCollectionValues;
 import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getImage;
@@ -21,7 +21,7 @@ import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSeries;
 import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSeriesSize;
 import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSingleImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
-import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getRawData;
+import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getStringFromURIBuilder;
 
 /**
  * The core class of the TCIA Client implementation
@@ -36,10 +36,6 @@ public class TCIAClientImpl implements ITCIAClient {
 		TCIAClientUtil.init();
 	}
 
-	private static String convertStreamToString(java.io.InputStream is) {
-		java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-		return s.hasNext() ? s.next() : "";
-	}
 
 	/**
 	 * Get the modality values
@@ -61,11 +57,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (bodyPartExamined != null)
 				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
 
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -101,11 +93,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
 
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -125,11 +113,7 @@ public class TCIAClientImpl implements ITCIAClient {
 		try {
 			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getCollectionValues);
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -157,11 +141,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (modality != null)
 				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
 
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -196,11 +176,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (studyInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.STUDY_INSTANCE_UID, studyInstanceUID);
 
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -261,10 +237,7 @@ public class TCIAClientImpl implements ITCIAClient {
 				uriBuilder.addParameter(DICOMAttributes.MANUFACTURER_MODEL_NAME, manufacturerModelName);
 			}
 
-			uriBuilder.addParameter("format", format.name());
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -289,11 +262,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (collection != null)
 				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -318,11 +287,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (seriesInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
 
-			uriBuilder.addParameter("format", format.name());
-
-			URI uri = uriBuilder.build();
-			InputStream is = getRawData(uri);
-			return convertStreamToString(is);
+			return getStringFromURIBuilder(format, uriBuilder);
 
 		} catch (TCIAClientException e) {
 			throw e;
@@ -385,8 +350,37 @@ public class TCIAClientImpl implements ITCIAClient {
 	}
 
 
-	public String NewStudiesInPatientCollection(String collection, OutputFormat format) throws TCIAClientException {
-		return null;
+	/**
+	 * Gets the new studies in a patient collection
+	 * @param date the date of the studies  : mandatory
+	 * @param collection the collection name : mandatory
+	 * @param patientID the ID of the patient : optional
+	 * @param format the output format
+	 * @return the new studies in the patient collection
+	 * @throws TCIAClientException, if the execution failed.
+	 */
+	public String NewStudiesInPatientCollection(String date, String collection, String patientID, OutputFormat format)
+			throws TCIAClientException {
+		try {
+			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + NewStudiesInPatientCollection);
+
+			if (date != null)
+				uriBuilder.addParameter(DICOMAttributes.DATE, date);
+
+			if (collection != null)
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
+
+			if (collection != null)
+				uriBuilder.addParameter(DICOMAttributes.PATIENT_ID, patientID);
+
+			return getStringFromURIBuilder(format, uriBuilder);
+
+		} catch (TCIAClientException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
+		}
 	}
 
 	public String getSOPInstanceUIDs(String collection, OutputFormat format) throws TCIAClientException {

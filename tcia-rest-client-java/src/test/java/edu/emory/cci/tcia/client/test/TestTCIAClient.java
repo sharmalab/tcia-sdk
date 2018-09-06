@@ -1,5 +1,6 @@
 package edu.emory.cci.tcia.client.test;
 
+import static edu.emory.cci.tcia.client.util.TCIAClientUtil.saveTo;
 import static org.junit.Assert.fail;
 
 import java.io.FileOutputStream;
@@ -65,10 +66,8 @@ public class TestTCIAClient {
 			logger.info("[GET IMAGE]");
 			// Make the RESTfull call . Response comes back as InputStream. 
 			ImageResult imageResult = client.getImage(seriesInstanceUID);
-			double averageDICOMFileSize = 200 * 1024d ; // 200KB
-			double compressionRatio = 0.75 ; // approx
-			int estimatedFileSize = (int) (averageDICOMFileSize * compressionRatio * imageResult.getImageCount());
-			saveTo(imageResult.getRawData(),  seriesInstanceUID + ".zip", ".", estimatedFileSize);
+			// Store as a zip in the current directory.
+			saveTo(imageResult,  seriesInstanceUID + ".zip", ".");
 			
 		} catch (TCIAClientException e) {
 				fail(e.getMessage()); // request failed
@@ -92,10 +91,8 @@ public class TestTCIAClient {
 			logger.info("[GET SINGLE IMAGE]");
 			// Make the RESTfull call . Response comes back as InputStream.
 			ImageResult imageResult = client.getSingleImage(seriesInstanceUID, sopInstanceUID);
-			double averageDICOMFileSize = 200 * 1024d ; // 200KB
-			double compressionRatio = 0.75 ; // approx
-			int estimatedFileSize = (int) (averageDICOMFileSize * compressionRatio * imageResult.getImageCount());
-			saveTo(imageResult.getRawData(),  seriesInstanceUID + ".zip", ".", estimatedFileSize);
+			// Store as a zip in the current directory.
+			saveTo(imageResult,  seriesInstanceUID + ".zip", ".");
 
 		} catch (TCIAClientException e) {
 			fail(e.getMessage()); // request failed
@@ -281,8 +278,40 @@ public class TestTCIAClient {
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
+	}
+
+
+
+	/**
+	 * Method: Get New Studies in Patient Collection
+	 * Description: Return the set of new studies in the given patient collection.
+	 */
+	@Test
+	public void testNewStudiesInPatientCollection()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String date = "1998-12-08"; // mandatory
+		String collection = "TCGA-GBM" ; // mandatory
+		String patientID = "TCGA-08-0244"; // optional
+
+		try {
+			// Make the RESTfull call . Response comes back as InputStream.
+			String respJSON = client.NewStudiesInPatientCollection(date, collection, patientID, OutputFormat.json);
+
+			logger.info("[NEW STUDIES IN PATIENT COLLECTION]");
+
+			// Print server response
+			logger.info(respJSON);
+
+
+		} catch (TCIAClientException e) {
+			fail(e.getMessage()); // request failed
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
 
 	}
+
 
 	/**
 	 * Method: Get Manufacturer Values
@@ -314,27 +343,4 @@ public class TestTCIAClient {
 
 	}
 
-	
-	
-	private static void saveTo(InputStream in, String name, String directory, int estimatedBytes) throws IOException
-	{
-		FileOutputStream fos = new FileOutputStream(directory + "/" + name);
-		byte[] buffer = new byte[4096];
-		int read = -1;
-		int sum = 0;
-		while((read = in.read(buffer)) > 0)
-		{
-			fos.write(buffer , 0 , read);
-			long mseconds = System.currentTimeMillis();
-			sum += read;
-			
-			if(mseconds % 10 == 0)
-			{
-				logger.info(String.format("Bytes Written %s out of estimated %s  : " , sum , estimatedBytes));
-			}
-		}
-		
-		fos.close();
-		in.close();
-	}
 }

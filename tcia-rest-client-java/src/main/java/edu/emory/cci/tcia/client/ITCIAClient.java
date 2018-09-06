@@ -19,7 +19,7 @@ public interface ITCIAClient {
 	ImageResult getSingleImage(String seriesInstanceUID, String sopInstanceUID) throws TCIAClientException;
 	String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException;
 
-	String NewStudiesInPatientCollection(String collection, OutputFormat format) throws TCIAClientException;
+	String NewStudiesInPatientCollection(String date, String collection, String patientID, OutputFormat format) throws TCIAClientException;
 	String getSOPInstanceUIDs(String collection, OutputFormat format) throws TCIAClientException;
 	String PatientsByModality(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 	String NewPatientsInCollection(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;

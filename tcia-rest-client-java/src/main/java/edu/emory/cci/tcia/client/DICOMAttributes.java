@@ -13,4 +13,5 @@ public class DICOMAttributes {
 	public static final String BODY_PART_EXAMINED = "BodyPartExamined";
 	public static final String MANUFACTURER = "Manufacturer";
 	public static final String MANUFACTURER_MODEL_NAME = "ManufacturerModelName";
+	public static final String DATE = "Date";
 }
