@@ -2,17 +2,20 @@ package edu.emory.cci.tcia.client.impl;
 
 import java.net.URI;
 
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import edu.emory.cci.tcia.client.core.ITCIAClient;
 import edu.emory.cci.tcia.client.core.OutputFormat;
 import edu.emory.cci.tcia.client.definitions.DICOMAttributes;
 import edu.emory.cci.tcia.client.exceptions.TCIAClientException;
 import edu.emory.cci.tcia.client.util.ImageResult;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import edu.emory.cci.tcia.client.util.TCIAClientUtil;
 
+/*
+ * Static imports of the service endpoint definitions
+ */
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.NewStudiesInPatientCollection;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getBodyPartValues;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getCollectionValues;
@@ -24,8 +27,13 @@ import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getPatientS
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeries;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeriesSize;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSingleImage;
+
+/*
+ * Static imports of the utility methods.
+ */
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getStringFromURIBuilder;
+
 
 /**
  * The core class of the TCIA Client implementation
