@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import edu.emory.cci.tcia.client.core.ITCIAClient;
 import edu.emory.cci.tcia.client.core.OutputFormat;
-import edu.emory.cci.tcia.client.TCIAClientException;
-import edu.emory.cci.tcia.client.TCIAClientImpl;
+import edu.emory.cci.tcia.client.exceptions.TCIAClientException;
+import edu.emory.cci.tcia.client.impl.TCIAClientImpl;
 
 
 

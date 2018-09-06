@@ -1,10 +1,11 @@
-package edu.emory.cci.tcia.client;
+package edu.emory.cci.tcia.client.impl;
 
 import java.net.URI;
 
 import edu.emory.cci.tcia.client.core.ITCIAClient;
 import edu.emory.cci.tcia.client.core.OutputFormat;
 import edu.emory.cci.tcia.client.definitions.DICOMAttributes;
+import edu.emory.cci.tcia.client.exceptions.TCIAClientException;
 import edu.emory.cci.tcia.client.util.ImageResult;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;

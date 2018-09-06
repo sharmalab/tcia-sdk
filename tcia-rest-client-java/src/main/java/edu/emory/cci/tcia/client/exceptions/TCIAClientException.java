@@ -1,4 +1,4 @@
-package edu.emory.cci.tcia.client;
+package edu.emory.cci.tcia.client.exceptions;
 
 /**
  * The TCIA Client Exception
