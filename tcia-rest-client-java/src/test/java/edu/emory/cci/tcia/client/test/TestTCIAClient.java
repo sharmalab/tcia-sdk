@@ -162,7 +162,7 @@ public class TestTCIAClient {
 
 		try {
 			// Make the RESTfull call . Response comes back as InputStream.
-			String respJSON = client.getSeriesSize(seriesInstanceUID, OutputFormat.json);
+			String respJSON = client.getSOPInstanceUIDs(seriesInstanceUID, OutputFormat.json);
 			logger.info("[GET SOP INSTANCE UIDS]");
 
 			// Print server response
