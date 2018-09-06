@@ -1,5 +1,6 @@
-package edu.emory.cci.tcia.client;
+package edu.emory.cci.tcia.client.core;
 
+import edu.emory.cci.tcia.client.TCIAClientException;
 import edu.emory.cci.tcia.client.util.ImageResult;
 
 /**

@@ -3,17 +3,13 @@ package edu.emory.cci.tcia.client.test;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.saveTo;
 import static org.junit.Assert.fail;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import edu.emory.cci.tcia.client.util.ImageResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import edu.emory.cci.tcia.client.ITCIAClient;
-import edu.emory.cci.tcia.client.OutputFormat;
+import edu.emory.cci.tcia.client.core.ITCIAClient;
+import edu.emory.cci.tcia.client.core.OutputFormat;
 import edu.emory.cci.tcia.client.TCIAClientException;
 import edu.emory.cci.tcia.client.TCIAClientImpl;
 
