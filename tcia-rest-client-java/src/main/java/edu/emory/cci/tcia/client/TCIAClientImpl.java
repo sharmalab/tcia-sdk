@@ -10,17 +10,17 @@ import org.apache.logging.log4j.Logger;
 
 import edu.emory.cci.tcia.client.util.TCIAClientUtil;
 
-import static edu.emory.cci.tcia.client.definitions.EndPoints.NewStudiesInPatientCollection;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getBodyPartValues;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getCollectionValues;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getImage;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getManufacturerValues;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getModalityValues;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getPatient;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getPatientStudy;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getSeries;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getSeriesSize;
-import static edu.emory.cci.tcia.client.definitions.EndPoints.getSingleImage;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.NewStudiesInPatientCollection;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getBodyPartValues;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getCollectionValues;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getImage;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getManufacturerValues;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getModalityValues;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getPatient;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getPatientStudy;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeries;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeriesSize;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSingleImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getStringFromURIBuilder;
 
