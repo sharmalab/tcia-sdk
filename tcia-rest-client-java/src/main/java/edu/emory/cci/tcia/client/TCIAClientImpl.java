@@ -2,7 +2,7 @@ package edu.emory.cci.tcia.client;
 
 import java.net.URI;
 
-import edu.emory.cci.tcia.client.conf.DICOMAttributeDefinitions;
+import edu.emory.cci.tcia.client.definitions.DICOMAttributes;
 import edu.emory.cci.tcia.client.util.ImageResult;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -10,17 +10,17 @@ import org.apache.logging.log4j.Logger;
 
 import edu.emory.cci.tcia.client.util.TCIAClientUtil;
 
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.NewStudiesInPatientCollection;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getBodyPartValues;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getCollectionValues;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getImage;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getManufacturerValues;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getModalityValues;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getPatient;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getPatientStudy;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSeries;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSeriesSize;
-import static edu.emory.cci.tcia.client.conf.EndPointDefinitions.getSingleImage;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.NewStudiesInPatientCollection;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getBodyPartValues;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getCollectionValues;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getImage;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getManufacturerValues;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getModalityValues;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getPatient;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getPatientStudy;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getSeries;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getSeriesSize;
+import static edu.emory.cci.tcia.client.definitions.EndPoints.getSingleImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.authenticateAndGetImage;
 import static edu.emory.cci.tcia.client.util.TCIAClientUtil.getStringFromURIBuilder;
 
@@ -53,10 +53,10 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getModalityValues);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			if (bodyPartExamined != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.BODY_PART_EXAMINED, bodyPartExamined);
+				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 
@@ -86,13 +86,13 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getManufacturerValues);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			if (bodyPartExamined != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.BODY_PART_EXAMINED, bodyPartExamined);
+				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
 
 			if (modality != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.MODALITY, modality);
+				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 
@@ -137,10 +137,10 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getBodyPartValues);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			if (modality != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.MODALITY, modality);
+				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 
@@ -169,13 +169,13 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getPatientStudy);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			if (patientID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.PATIENT_ID, patientID);
+				uriBuilder.addParameter(DICOMAttributes.PATIENT_ID, patientID);
 
 			if (studyInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.STUDY_INSTANCE_UID, studyInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.STUDY_INSTANCE_UID, studyInstanceUID);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 
@@ -209,33 +209,33 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSeries);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			if (studyInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.STUDY_INSTANCE_UID, studyInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.STUDY_INSTANCE_UID, studyInstanceUID);
 
 			if (modality != null) {
-				uriBuilder.addParameter(DICOMAttributeDefinitions.MODALITY, modality);
+				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
 			}
 
 			if (patientID != null) {
-				uriBuilder.addParameter(DICOMAttributeDefinitions.PATIENT_ID, patientID);
+				uriBuilder.addParameter(DICOMAttributes.PATIENT_ID, patientID);
 			}
 
 			if (seriesInstanceUID != null) {
-				uriBuilder.addParameter(DICOMAttributeDefinitions.SERIES_INSTANCE_UID, seriesInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
 			}
 
 			if (bodyPartExamined != null) {
-				uriBuilder.addParameter(DICOMAttributeDefinitions.BODY_PART_EXAMINED, bodyPartExamined);
+				uriBuilder.addParameter(DICOMAttributes.BODY_PART_EXAMINED, bodyPartExamined);
 			}
 
 			if (manufacturer != null) {
-				uriBuilder.addParameter(DICOMAttributeDefinitions.MANUFACTURER, manufacturer);
+				uriBuilder.addParameter(DICOMAttributes.MANUFACTURER, manufacturer);
 			}
 
 			if (manufacturerModelName != null) {
-				uriBuilder.addParameter(DICOMAttributeDefinitions.MANUFACTURER_MODEL_NAME, manufacturerModelName);
+				uriBuilder.addParameter(DICOMAttributes.MANUFACTURER_MODEL_NAME, manufacturerModelName);
 			}
 
 			return getStringFromURIBuilder(format, uriBuilder);
@@ -261,7 +261,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getPatient);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 
@@ -286,7 +286,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSeriesSize);
 
 			if (seriesInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.SERIES_INSTANCE_UID, seriesInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 
@@ -311,7 +311,7 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getImage);
 
 			if (seriesInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.SERIES_INSTANCE_UID, seriesInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
 
 			return authenticateAndGetImage(uriBuilder);
 
@@ -336,10 +336,10 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSingleImage);
 
 			if (seriesInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.SERIES_INSTANCE_UID, seriesInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
 
 			if (sopInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.SOP_INSTANCE_UID, sopInstanceUID);
+				uriBuilder.addParameter(DICOMAttributes.SOP_INSTANCE_UID, sopInstanceUID);
 
 			return authenticateAndGetImage(uriBuilder);
 
@@ -367,13 +367,13 @@ public class TCIAClientImpl implements ITCIAClient {
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + NewStudiesInPatientCollection);
 
 			if (date != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.DATE, date);
+				uriBuilder.addParameter(DICOMAttributes.DATE, date);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.COLLECTION, collection);
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
 
 			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributeDefinitions.PATIENT_ID, patientID);
+				uriBuilder.addParameter(DICOMAttributes.PATIENT_ID, patientID);
 
 			return getStringFromURIBuilder(format, uriBuilder);
 

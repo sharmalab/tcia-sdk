@@ -1,9 +1,9 @@
-package edu.emory.cci.tcia.client.conf;
+package edu.emory.cci.tcia.client.definitions;
 
 /**
  * Definitions of TCIA Endpoints
  */
-public class EndPointDefinitions {
+public class EndPoints {
 	public static String getImage = "getImage";
 	public static String getManufacturerValues = "getManufacturerValues";
 	public static String getModalityValues = "getModalityValues";
