@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import edu.emory.cci.tcia.client.core.ITCIAClient;
 import edu.emory.cci.tcia.client.core.OutputFormat;
-import edu.emory.cci.tcia.client.exceptions.TCIAClientException;
 import edu.emory.cci.tcia.client.impl.TCIAClientImpl;
 
 
@@ -42,8 +41,6 @@ public class TestTCIAClient {
 			// Print server response
 			logger.info(respJSON);
 
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -65,8 +62,6 @@ public class TestTCIAClient {
 			// Store as a zip in the current directory.
 			saveTo(imageResult,  seriesInstanceUID + ".zip", ".");
 			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -90,8 +85,6 @@ public class TestTCIAClient {
 			// Store as a zip in the current directory.
 			saveTo(imageResult,  seriesInstanceUID + ".zip", ".");
 
-		} catch (TCIAClientException e) {
-			fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -125,12 +118,9 @@ public class TestTCIAClient {
 			logger.info(respJSON);
 			
 			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
-
 	}
 
 
@@ -153,8 +143,31 @@ public class TestTCIAClient {
 			logger.info(respJSON);
 
 
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
+
+	}
+
+
+	/**
+	 * Method: Get SOP Instance UIDs
+	 * Description: Returns the SOP Instance UIDs of the series
+	 */
+	@Test
+	public void testGetSOPInstanceUIDs()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.647661854224310142997732034117";
+
+		try {
+			// Make the RESTfull call . Response comes back as InputStream.
+			String respJSON = client.getSeriesSize(seriesInstanceUID, OutputFormat.json);
+			logger.info("[GET SOP INSTANCE UIDS]");
+
+			// Print server response
+			logger.info(respJSON);
+
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -183,8 +196,6 @@ public class TestTCIAClient {
 			logger.info(respJSON);
 			
 			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -211,8 +222,6 @@ public class TestTCIAClient {
 			logger.info(respJSON);
 			
 			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -240,8 +249,6 @@ public class TestTCIAClient {
 			logger.info(respJSON);
 			
 			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -267,10 +274,7 @@ public class TestTCIAClient {
 
 			// Print server response
 			logger.info(respJSON);
-			
-			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
+
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -299,9 +303,6 @@ public class TestTCIAClient {
 			// Print server response
 			logger.info(respJSON);
 
-
-		} catch (TCIAClientException e) {
-			fail(e.getMessage()); // request failed
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
@@ -329,14 +330,9 @@ public class TestTCIAClient {
 
 			// Print server response
 			logger.info(respJSON);
-			
-			
-		} catch (TCIAClientException e) {
-				fail(e.getMessage()); // request failed
+
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
-
 	}
-
 }

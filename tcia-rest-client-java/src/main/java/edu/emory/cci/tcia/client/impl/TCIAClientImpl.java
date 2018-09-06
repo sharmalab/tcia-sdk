@@ -24,6 +24,7 @@ import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getManufact
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getModalityValues;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getPatient;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getPatientStudy;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSOPInstanceUIDs;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeries;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeriesSize;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSingleImage;
@@ -292,20 +293,7 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
-		try {
-			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
-			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSeriesSize);
-
-			if (seriesInstanceUID != null)
-				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
-
-			return getStringFromURIBuilder(format, uriBuilder);
-
-		} catch (TCIAClientException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
-		}
+		return getString(seriesInstanceUID, format, getSeriesSize);
 	}
 
 
@@ -395,8 +383,33 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public String getSOPInstanceUIDs(String collection, OutputFormat format) throws TCIAClientException {
-		return null;
+	/**
+	 * Gets the SOP (Service Object Pair) Instance UIDs
+	 * @param seriesInstanceUID the service instance UIDs : mandatory
+	 * @param format the output format
+	 * @return the SOP Instance UIDs
+	 * @throws TCIAClientException, if the execution failed
+	 */
+	public String getSOPInstanceUIDs(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
+		return getString(seriesInstanceUID, format, getSOPInstanceUIDs);
+	}
+
+
+	private String getString(String seriesInstanceUID, OutputFormat format, String propertiesOfSeriesInstance) throws TCIAClientException {
+		try {
+			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + propertiesOfSeriesInstance);
+
+			if (seriesInstanceUID != null)
+				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
+
+			return getStringFromURIBuilder(format, uriBuilder);
+
+		} catch (TCIAClientException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
+		}
 	}
 
 	public String PatientsByModality(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
