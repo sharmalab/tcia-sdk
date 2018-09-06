@@ -8,16 +8,16 @@ import java.io.InputStream;
 public class ImageResult {
 	private InputStream rawData;
 	private Integer imageCount;
-	public InputStream getRawData() {
+	InputStream getRawData() {
 		return rawData;
 	}
-	public void setRawData(InputStream rawData) {
+	void setRawData(InputStream rawData) {
 		this.rawData = rawData;
 	}
-	public Integer getImageCount() {
+	Integer getImageCount() {
 		return imageCount;
 	}
-	public void setImageCount(Integer imageCount) {
+	void setImageCount(Integer imageCount) {
 		this.imageCount = imageCount;
 	}
 }
