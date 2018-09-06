@@ -347,7 +347,6 @@ public class TCIAClientImpl implements ITCIAClient {
 			if (seriesInstanceUID != null)
 				uriBuilder.addParameter(DICOMAttributes.SERIES_INSTANCE_UID, seriesInstanceUID);
 
-
 			return authenticateAndGetImage(uriBuilder);
 
 		} catch (TCIAClientException e) {
