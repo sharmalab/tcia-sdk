@@ -23,7 +23,7 @@ public interface ITCIAClient {
 	String NewStudiesInPatientCollection(String date, String collection, String patientID, OutputFormat format) throws TCIAClientException;
 	String getSOPInstanceUIDs(String seriesInstanceUID, OutputFormat format) throws TCIAClientException;
 	String PatientsByModality(String collection, String modality, OutputFormat format) throws TCIAClientException;
-	String NewPatientsInCollection(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
+	String NewPatientsInCollection(String date,String collection, OutputFormat format) throws TCIAClientException;
 	String getSharedList(String collection,String patientID , String studyInstanceUID, OutputFormat format) throws TCIAClientException;
 
 

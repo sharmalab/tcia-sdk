@@ -337,6 +337,33 @@ public class TestTCIAClient {
 
 
 	/**
+	 * Method: Get New Patients Collection
+	 * Description: Return the set of new patients in the given collection.
+	 */
+	@Test
+	public void testNewPatientsInCollection()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String date = "1998-12-08"; // mandatory
+		String collection = "TCGA-GBM" ; // mandatory
+
+		try {
+			// Make the RESTfull call . Response comes back as InputStream.
+			String respJSON = client.NewPatientsInCollection(date, collection, OutputFormat.json);
+
+			logger.info("[NEW PATIENTS IN COLLECTION]");
+
+			// Print server response
+			logger.info(respJSON);
+
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
+
+	}
+
+
+	/**
 	 * Method: Get Manufacturer Values
 	 * Description: Returns the manufacturers.
 	 */

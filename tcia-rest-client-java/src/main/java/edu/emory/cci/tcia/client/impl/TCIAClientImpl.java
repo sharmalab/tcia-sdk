@@ -16,6 +16,7 @@ import edu.emory.cci.tcia.client.util.TCIAClientUtil;
 /*
  * Static imports of the service endpoint definitions
  */
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.NewPatientsInCollection;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.NewStudiesInPatientCollection;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.PatientsByModality;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getBodyPartValues;
@@ -428,8 +429,32 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public String NewPatientsInCollection(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
-		return null;
+	/**
+	 * Get the new patients in collection
+	 * @param date the given date : mandatory
+	 * @param collection the collection name : mandatory
+	 * @param format the output format
+ 	 * @return the new patients in collection
+	 * @throws TCIAClientException if the execution failed.
+	 */
+	public String NewPatientsInCollection(String date, String collection, OutputFormat format) throws TCIAClientException {
+		try {
+			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + NewPatientsInCollection);
+
+			if (date != null)
+				uriBuilder.addParameter(DICOMAttributes.DATE, date);
+
+			if (collection != null)
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
+
+			return getStringFromURIBuilder(format, uriBuilder);
+
+		} catch (TCIAClientException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
+		}
 	}
 
 	public String getSharedList(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
