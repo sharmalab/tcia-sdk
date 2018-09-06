@@ -1,9 +1,9 @@
-package edu.emory.cci.tcia.client;
+package edu.emory.cci.tcia.client.conf;
 
 /**
  * The attributes defined for TCIA/DICOM
  */
-public class DICOMAttributes {
+public class DICOMAttributeDefinitions {
 	public static final String COLLECTION = "Collection";
 	public static final String PATIENT_ID = "PatientID";
 	public static final String STUDY_INSTANCE_UID = "StudyInstanceUID";
