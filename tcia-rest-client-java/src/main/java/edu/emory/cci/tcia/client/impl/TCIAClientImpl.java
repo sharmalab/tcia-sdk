@@ -17,6 +17,7 @@ import edu.emory.cci.tcia.client.util.TCIAClientUtil;
  * Static imports of the service endpoint definitions
  */
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.NewStudiesInPatientCollection;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.PatientsByModality;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getBodyPartValues;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getCollectionValues;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getImage;
@@ -77,7 +78,6 @@ public class TCIAClientImpl implements ITCIAClient {
 		} catch (Exception e) {
 			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
 		}
-
 	}
 
 
@@ -144,24 +144,7 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getBodyPartValues(String collection, String modality, OutputFormat format) throws TCIAClientException {
-		try {
-			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
-			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getBodyPartValues);
-
-			if (collection != null)
-				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
-
-			if (modality != null)
-				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
-
-			return getStringFromURIBuilder(format, uriBuilder);
-
-		} catch (TCIAClientException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
-		}
-
+		return getModalityProperties(collection, modality, format, getBodyPartValues);
 	}
 
 	/**
@@ -293,7 +276,7 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
-		return getString(seriesInstanceUID, format, getSeriesSize);
+		return getSeriesProperties(seriesInstanceUID, format, getSeriesSize);
 	}
 
 
@@ -391,11 +374,11 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getSOPInstanceUIDs(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
-		return getString(seriesInstanceUID, format, getSOPInstanceUIDs);
+		return getSeriesProperties(seriesInstanceUID, format, getSOPInstanceUIDs);
 	}
 
 
-	private String getString(String seriesInstanceUID, OutputFormat format, String propertiesOfSeriesInstance) throws TCIAClientException {
+	private String getSeriesProperties(String seriesInstanceUID, OutputFormat format, String propertiesOfSeriesInstance) throws TCIAClientException {
 		try {
 			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
 			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + propertiesOfSeriesInstance);
@@ -412,8 +395,37 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public String PatientsByModality(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
-		return null;
+	/**
+	 * Get the patients by modality
+	 * @param collection the name of the collection : mandatory
+	 * @param modality the modality : mandatory
+	 * @param format the output format
+	 * @return the patients by modality
+	 * @throws TCIAClientException, if the execution failed
+	 */
+
+	public String PatientsByModality(String collection, String modality, OutputFormat format) throws TCIAClientException {
+		return getModalityProperties(collection, modality, format, PatientsByModality);
+	}
+
+	private String getModalityProperties(String collection, String modality, OutputFormat format, String propertiesOfModality) throws TCIAClientException {
+		try {
+			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + propertiesOfModality);
+
+			if (collection != null)
+				uriBuilder.addParameter(DICOMAttributes.COLLECTION, collection);
+
+			if (modality != null)
+				uriBuilder.addParameter(DICOMAttributes.MODALITY, modality);
+
+			return getStringFromURIBuilder(format, uriBuilder);
+
+		} catch (TCIAClientException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
+		}
 	}
 
 	public String NewPatientsInCollection(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {

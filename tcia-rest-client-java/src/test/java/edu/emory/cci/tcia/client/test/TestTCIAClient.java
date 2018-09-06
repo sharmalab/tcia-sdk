@@ -252,6 +252,32 @@ public class TestTCIAClient {
 		} catch (Exception e) {
 			fail(e.getMessage()); // request failed
 		}
+	}
+
+	/**
+	 * Method: Get Patients By Modality
+	 * Description: Return the patients by modality
+	 */
+	@Test
+	public void testGetPatientsByModality()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String collection = "TCGA-GBM" ; // optional
+		String modality = "MR"; // optional
+
+		try {
+			// Make the RESTfull call . Response comes back as InputStream.
+			String respJSON = client.PatientsByModality(collection, modality, OutputFormat.json);
+
+			logger.info("[PATIENTS BY MODALITY]");
+
+			// Print server response
+			logger.info(respJSON);
+
+
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
 
 	}
 
