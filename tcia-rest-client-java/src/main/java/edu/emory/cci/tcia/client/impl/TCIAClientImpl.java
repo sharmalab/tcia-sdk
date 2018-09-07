@@ -29,6 +29,7 @@ import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getPatientS
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSOPInstanceUIDs;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeries;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSeriesSize;
+import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSharedList;
 import static edu.emory.cci.tcia.client.definitions.ServiceEndpoints.getSingleImage;
 
 /*
@@ -54,9 +55,10 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the modality values
-	 * @param collection the collection name : optional
- 	 * @param bodyPartExamined the body part examined : optional
-	 * @param format the format
+	 *
+	 * @param collection       the collection name : optional
+	 * @param bodyPartExamined the body part examined : optional
+	 * @param format           the format
 	 * @return the modality values
 	 * @throws TCIAClientException if the execution fails
 	 */
@@ -84,10 +86,11 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the manufacturer Values
-	 * @param collection the name of the collection : optional
+	 *
+	 * @param collection       the name of the collection : optional
 	 * @param bodyPartExamined the examined body part : optional
-	 * @param modality the modality : optional
-	 * @param format the format
+	 * @param modality         the modality : optional
+	 * @param format           the format
 	 * @return the manufacturer values
 	 * @throws TCIAClientException if the execution failed
 	 */
@@ -118,6 +121,7 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the values of the collections
+	 *
 	 * @param format the format to return the output
 	 * @return the collection values
 	 * @throws TCIAClientException, if the execution failed.
@@ -138,9 +142,10 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the body part values
+	 *
 	 * @param collection the name of the collection : optional
-	 * @param modality the modality : optional
-	 * @param format the output format
+	 * @param modality   the modality : optional
+	 * @param format     the output format
 	 * @return the body part values
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -150,10 +155,11 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the relevant patient studies
-	 * @param collection the collection name : optional
-	 * @param patientID the ID of the patient : optional
+	 *
+	 * @param collection       the collection name : optional
+	 * @param patientID        the ID of the patient : optional
 	 * @param studyInstanceUID the UID of the study instance : optional
-	 * @param format the output format
+	 * @param format           the output format
 	 * @return the patient study
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -184,15 +190,16 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the series
-	 * @param collection the collection name : optional
-	 * @param studyInstanceUID the UID of the study instance : optional
- 	 * @param modality the modality : optional
-	 * @param patientID ID of the patient : optional
-	 * @param seriesInstanceUID UID of the series instance : optional
- 	 * @param bodyPartExamined the examined body part : optional
- 	 * @param manufacturer name of the manufacturer : optional
+	 *
+	 * @param collection            the collection name : optional
+	 * @param studyInstanceUID      the UID of the study instance : optional
+	 * @param modality              the modality : optional
+	 * @param patientID             ID of the patient : optional
+	 * @param seriesInstanceUID     UID of the series instance : optional
+	 * @param bodyPartExamined      the examined body part : optional
+	 * @param manufacturer          name of the manufacturer : optional
 	 * @param manufacturerModelName the model of the manufacturer : optional
-	 * @param format the output format
+	 * @param format                the output format
 	 * @return the series
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -245,8 +252,9 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the patients
+	 *
 	 * @param collection, the collection name : optional
-	 * @param format, the output format
+	 * @param format,     the output format
 	 * @return the patients
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -271,8 +279,9 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the size of the given series
+	 *
 	 * @param seriesInstanceUID : UID of the series instance : mandatory
-	 * @param format, the output format
+	 * @param format,           the output format
 	 * @return the size of the series
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -283,6 +292,7 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get a zip of matching images
+	 *
 	 * @param seriesInstanceUID, the UID of the series instance. : mandatory
 	 * @return the zip of images
 	 * @throws TCIAClientException, if the execution failed
@@ -307,8 +317,9 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get a single image
+	 *
 	 * @param seriesInstanceUID, the UID of the series instance. : mandatory
-	 * @param sopInstanceUID, the UID of the Service-Object Pair (SOP). : mandatory
+	 * @param sopInstanceUID,    the UID of the Service-Object Pair (SOP). : mandatory
 	 * @return the single image
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -336,10 +347,11 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Gets the new studies in a patient collection
-	 * @param date the date of the studies  : mandatory
+	 *
+	 * @param date       the date of the studies  : mandatory
 	 * @param collection the collection name : mandatory
-	 * @param patientID the ID of the patient : optional
-	 * @param format the output format
+	 * @param patientID  the ID of the patient : optional
+	 * @param format     the output format
 	 * @return the new studies in the patient collection
 	 * @throws TCIAClientException, if the execution failed.
 	 */
@@ -369,8 +381,9 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Gets the SOP (Service Object Pair) Instance UIDs
+	 *
 	 * @param seriesInstanceUID the service instance UIDs : mandatory
-	 * @param format the output format
+	 * @param format            the output format
 	 * @return the SOP Instance UIDs
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -398,9 +411,10 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the patients by modality
+	 *
 	 * @param collection the name of the collection : mandatory
-	 * @param modality the modality : mandatory
-	 * @param format the output format
+	 * @param modality   the modality : mandatory
+	 * @param format     the output format
 	 * @return the patients by modality
 	 * @throws TCIAClientException, if the execution failed
 	 */
@@ -431,10 +445,11 @@ public class TCIAClientImpl implements ITCIAClient {
 
 	/**
 	 * Get the new patients in collection
-	 * @param date the given date : mandatory
+	 *
+	 * @param date       the given date : mandatory
 	 * @param collection the collection name : mandatory
-	 * @param format the output format
- 	 * @return the new patients in collection
+	 * @param format     the output format
+	 * @return the new patients in collection
 	 * @throws TCIAClientException if the execution failed.
 	 */
 	public String NewPatientsInCollection(String date, String collection, OutputFormat format) throws TCIAClientException {
@@ -457,7 +472,28 @@ public class TCIAClientImpl implements ITCIAClient {
 		}
 	}
 
-	public String getSharedList(String collection, String patientID, String studyInstanceUID, OutputFormat format) throws TCIAClientException {
-		return null;
+	/**
+	 * Get the contents of a shared list
+	 *
+	 * @param name   the name of the shared list : mandatory
+	 * @param format the output format
+	 * @return the contents of the shared list
+	 * @throws TCIAClientException if the execution failed
+	 */
+	public String getSharedList(String name, OutputFormat format) throws TCIAClientException {
+		try {
+			URI baseUri = new URI(TCIAClientUtil.getResourceUrl());
+			URIBuilder uriBuilder = new URIBuilder(baseUri.toString() + "/" + getSharedList);
+
+			if (name != null)
+				uriBuilder.addParameter(DICOMAttributes.NAME, name);
+
+			return getStringFromURIBuilder(format, uriBuilder);
+
+		} catch (TCIAClientException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new TCIAClientException(e, TCIAClientUtil.getResourceUrl());
+		}
 	}
 }

@@ -34,7 +34,7 @@ public class TestTCIAClient {
 		ITCIAClient client = new TCIAClientImpl();
 		
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getCollectionValues(OutputFormat.json);
 
 			logger.info("[GET COLLECTION VALUES]");
@@ -57,7 +57,7 @@ public class TestTCIAClient {
 		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440";
 		try {
 			logger.info("[GET IMAGE]");
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			ImageResult imageResult = client.getImage(seriesInstanceUID);
 			// Store as a zip in the current directory.
 			saveTo(imageResult,  seriesInstanceUID + ".zip", ".");
@@ -80,7 +80,7 @@ public class TestTCIAClient {
 		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440";
 		try {
 			logger.info("[GET SINGLE IMAGE]");
-			// Make the RESTfull call . Response comes back as InputStream.
+			// Make the RESTful call. Response comes back as InputStream.
 			ImageResult imageResult = client.getSingleImage(seriesInstanceUID, sopInstanceUID);
 			// Store as a zip in the current directory.
 			saveTo(imageResult,  seriesInstanceUID + ".zip", ".");
@@ -108,7 +108,7 @@ public class TestTCIAClient {
 		String manufacturerModelName = "GENESIS_SIGNA"; //optional
 
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getSeries(collection, studyInstanceUID, modality, patientID, seriesInstanceUID,
 					bodyPartExamined, manufacturer, manufacturerModelName, OutputFormat.json);
 
@@ -135,7 +135,7 @@ public class TestTCIAClient {
 		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.647661854224310142997732034117";
 
 		try {
-			// Make the RESTfull call . Response comes back as InputStream.
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getSeriesSize(seriesInstanceUID, OutputFormat.json);
 			logger.info("[GET SERIES SIZE]");
 
@@ -161,7 +161,7 @@ public class TestTCIAClient {
 		String seriesInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.647661854224310142997732034117";
 
 		try {
-			// Make the RESTfull call . Response comes back as InputStream.
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getSOPInstanceUIDs(seriesInstanceUID, OutputFormat.json);
 			logger.info("[GET SOP INSTANCE UIDS]");
 
@@ -188,7 +188,7 @@ public class TestTCIAClient {
 		String studyInstanceUID = "1.3.6.1.4.1.14519.5.2.1.7695.4001.130563880911723253267280582465"; // optional
 		
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getPatientStudy(collection, patientID, studyInstanceUID, OutputFormat.json);
 
 			logger.info("[GET PATIENT STUDY]");
@@ -213,7 +213,7 @@ public class TestTCIAClient {
 		String collection = "TCGA-GBM"; // optional
 		
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getPatient(collection , OutputFormat.json);
 
 			logger.info("[GET PATIENT]");
@@ -240,7 +240,7 @@ public class TestTCIAClient {
 		String modality = "MR"; // optional
 		
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getBodyPartValues(collection, modality, OutputFormat.json);
 
 			logger.info("[GET BODY PART VALUES]");
@@ -266,7 +266,7 @@ public class TestTCIAClient {
 		String modality = "MR"; // optional
 
 		try {
-			// Make the RESTfull call . Response comes back as InputStream.
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.PatientsByModality(collection, modality, OutputFormat.json);
 
 			logger.info("[PATIENTS BY MODALITY]");
@@ -293,7 +293,7 @@ public class TestTCIAClient {
 		String bodyPartExamined = "BRAIN"; // optional
 
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getModalityValues(collection, bodyPartExamined, OutputFormat.json);
 
 			logger.info("[GET MODALITY VALUES]");
@@ -348,7 +348,7 @@ public class TestTCIAClient {
 		String collection = "TCGA-GBM" ; // mandatory
 
 		try {
-			// Make the RESTfull call . Response comes back as InputStream.
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.NewPatientsInCollection(date, collection, OutputFormat.json);
 
 			logger.info("[NEW PATIENTS IN COLLECTION]");
@@ -376,10 +376,36 @@ public class TestTCIAClient {
 		String modality = "MR"; // optional
 		
 		try {
-			// Make the RESTfull call . Response comes back as InputStream. 
+			// Make the RESTful call. Response comes back as InputStream.
 			String respJSON = client.getManufacturerValues(collection, bodyPartExamined, modality, OutputFormat.json);
 
 			logger.info("[GET MANUFACTURER VALUES]");
+
+			// Print server response
+			logger.info(respJSON);
+
+		} catch (Exception e) {
+			fail(e.getMessage()); // request failed
+		}
+	}
+
+
+
+	/**
+	 * Method: Get contents of a shared list
+	 * Description: Returns the contents of a shared list.
+	 */
+	@Test
+	public void testGetSharedList()
+	{
+		ITCIAClient client = new TCIAClientImpl();
+		String name = "test" ; // mandatory
+
+		try {
+			// Make the RESTful call. Response comes back as InputStream.
+			String respJSON = client.getSharedList(name, OutputFormat.json);
+
+			logger.info("[GET SHARED LIST]");
 
 			// Print server response
 			logger.info(respJSON);
