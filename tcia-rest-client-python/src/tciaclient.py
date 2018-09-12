@@ -1,5 +1,5 @@
 
-import urllib2, urllib,sys
+import urllib.request,urllib.parse,sys
 #
 # Refer https://wiki.cancerimagingarchive.net/display/Public/REST+API+Usage+Guide for complete list of API
 #
@@ -18,12 +18,12 @@ class TCIAClient:
         self.baseUrl = baseUrl
         
     def execute(self, url, queryParameters={}):
-        queryParameters = dict((k, v) for k, v in queryParameters.iteritems() if v)
+        queryParameters = dict((k, v) for k, v in queryParameters.items() if v)
         headers = {"api_key" : self.apiKey }
-        queryString = "?%s" % urllib.urlencode(queryParameters)
+        queryString = "?%s" % urllib.parse.urlencode(queryParameters)
         requestUrl = url + queryString
-        request = urllib2.Request(url=requestUrl , headers=headers)
-        resp = urllib2.urlopen(request)
+        request = urllib.request.Request(url=requestUrl , headers=headers)
+        resp = urllib.request.urlopen(request)
         return resp
     
     def get_modality_values(self,collection = None , bodyPartExamined = None , modality = None , outputFormat = "json" ):
@@ -76,33 +76,33 @@ class TCIAClient:
 
 def printServerResponse(response):
     if response.getcode() == 200:
-        print "Server Returned:\n"
-        print response.read()
-        print "\n"
+        print ("Server Returned:\n")
+        print (response.read())
+        print ("\n")
     
     else:
-        print "Error : " + str(response.getcode) # print error code
+        print ("Error : " + str(response.getcode)) # print error code
 
 # Instantiate TCIAClient object
-tcia_client = TCIAClient(apiKey = "" , baseUrl = "https://services.cancerimagingarchive.net/services/TCIA/TCIA/query")  # Set the API-Key
+tcia_client = TCIAClient(apiKey = "" , baseUrl = "http://172.20.11.222:8000/radiology")  # Set the API-Key
 
 # test get_manufacturer_values
 try:    
     response = tcia_client.get_manufacturer_values(collection = None, bodyPartExamined = None, modality =None, outputFormat = "json")
     printServerResponse(response);
-except urllib2.HTTPError, err:
-    print "Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read()
+except urllib.error.HTTPError as err:
+    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 try:
     response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = None, modality =None, outputFormat = "csv")
     printServerResponse(response);
-except urllib2.HTTPError, err:
-    print "Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read()
+except urllib.error.HTTPError as err:
+    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 try:
     response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = None, modality ="MR", outputFormat = "xml")
     printServerResponse(response);
-except urllib2.HTTPError, err:
-    print "Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read()
+except urllib.error.HTTPError as err:
+    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
     
 
 # test get_image
@@ -110,14 +110,14 @@ try:
     response = tcia_client.get_image(seriesInstanceUid = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440");
     # Save server response as images.zip in current directory
     if response.getcode() == 200:
-        print "\n" + str(response.info())
+        print ("\n" + str(response.info()))
         bytesRead = response.read()
         fout = open("images.zip", "wb")
         fout.write(bytesRead)
         fout.close()
-        print "\nDownloaded file images.zip from the server"
+        print ("\nDownloaded file images.zip from the server")
     else:
-        print "Error : " + str(response.getcode) # print error code
-        print "\n" + str(response.info())
-except urllib2.HTTPError, err:
-    print "Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read()
+        print ("Error : " + str(response.getcode)) # print error code
+        print ("\n" + str(response.info()))
+except urllib.error.HTTPError as err:
+    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
