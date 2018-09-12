@@ -13,7 +13,6 @@ class TCIAClient:
     GET_COLLECTION_VALUES = "getCollectionValues"
     GET_BODY_PART_VALUES = "getBodyPartValues"
     GET_PATIENT_STUDY = "getPatientStudy"
-
     GET_SERIES = "getSeries"
     GET_PATIENT = "getPatient"
     
@@ -67,16 +66,18 @@ class TCIAClient:
         resp = self.execute(serviceUrl , queryParameters)
         return resp
 
-    def get_patient(self,collection = None , outputFormat = "json" ):
+    def get_patient(self, collection = None , outputFormat = "json" ):
         serviceUrl = self.baseUrl + "/" + self.GET_PATIENT
         queryParameters = {"Collection" : collection , "format" : outputFormat }
         resp = self.execute(serviceUrl , queryParameters)
         return resp
+
     def get_image(self, seriesInstanceUid):   # SeriesInstanceUID: required
         serviceUrl = self.baseUrl + "/" + self.GET_IMAGE
         queryParameters = { "SeriesInstanceUID" : seriesInstanceUid }
         resp = self.execute( serviceUrl , queryParameters)
         return resp
+
     def get_single_image(self, sopInstanceUid, seriesInstanceUid):   # SeriesInstanceUID: required, sopInstanceUID: required
         serviceUrl = self.baseUrl + "/" + self.GET_SINGLE_IMAGE
         queryParameters = { "SOPInstanceUID" : sopInstanceUid, "SeriesInstanceUID" : seriesInstanceUid}        
@@ -128,6 +129,14 @@ try:
     printServerResponse(tcia_client.GET_BODY_PART_VALUES, response);
 except urllib.error.HTTPError as err:
     print ("Error executing " + tcia_client.GET_BODY_PART_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
+
+# test get_patient
+try:    
+    response = tcia_client.get_patient(collection = "TCGA-GBM", outputFormat = "json")
+    printServerResponse(tcia_client.GET_PATIENT, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_PATIENT + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 # test get_series
