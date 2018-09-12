@@ -11,8 +11,8 @@ class TCIAClient:
     GET_MANUFACTURER_VALUES = "getManufacturerValues"
     GET_MODALITY_VALUES = "getModalityValues"
     GET_COLLECTION_VALUES = "getCollectionValues"
-
     GET_BODY_PART_VALUES = "getBodyPartValues"
+
     GET_PATIENT_STUDY = "getPatientStudy"
     GET_SERIES = "getSeries"
     GET_PATIENT = "getPatient"
@@ -60,6 +60,7 @@ class TCIAClient:
         queryParameters = {"Collection" : collection , "PatientID" : patientId , "StudyInstanceUID" : studyInstanceUid , "format" : outputFormat }
         resp = self.execute(serviceUrl , queryParameters)
         return resp
+
     def get_series(self, collection = None , modality = None , studyInstanceUid = None , outputFormat = "json" ):
         serviceUrl = self.baseUrl + "/" + self.GET_SERIES
         queryParameters = {"Collection" : collection , "StudyInstanceUID" : studyInstanceUid , "Modality" : modality , "format" : outputFormat }
@@ -110,6 +111,14 @@ try:
     printServerResponse(tcia_client.GET_MODALITY_VALUES, response);
 except urllib.error.HTTPError as err:
     print ("Error executing " + tcia_client.GET_MODALITY_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
+
+# test get_patient_study
+try:    
+    response = tcia_client.get_patient_study(collection = "TCGA-GBM", patientId = "TCGA-08-0244", studyInstanceUid = "1.3.6.1.4.1.14519.5.2.1.7695.4001.130563880911723253267280582465", outputFormat = "json")
+    printServerResponse(tcia_client.GET_PATIENT_STUDY, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_PATIENT_STUDY + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 # test get_body_part_values
