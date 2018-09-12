@@ -1,11 +1,14 @@
 
-import urllib.request,urllib.parse,sys
+import urllib.request
+import urllib.parse
+import sys
 #
 # Refer https://wiki.cancerimagingarchive.net/display/Public/REST+API+Usage+Guide for complete list of API
 #
 class TCIAClient:
     GET_IMAGE = "getImage"
     GET_MANUFACTURER_VALUES = "getManufacturerValues"
+
     GET_MODALITY_VALUES = "getModalityValues"
     GET_COLLECTION_VALUES = "getCollectionValues"
     GET_BODY_PART_VALUES = "getBodyPartValues"
@@ -65,7 +68,7 @@ class TCIAClient:
         queryParameters = {"Collection" : collection , "format" : outputFormat }
         resp = self.execute(serviceUrl , queryParameters)
         return resp
-    def get_image(self , seriesInstanceUid):
+    def get_image(self, seriesInstanceUid):   # SeriesInstanceUID: required
         serviceUrl = self.baseUrl + "/" + self.GET_IMAGE
         queryParameters = { "SeriesInstanceUID" : seriesInstanceUid }
         resp = self.execute( serviceUrl , queryParameters)
@@ -75,9 +78,9 @@ class TCIAClient:
                 
         
 
-def printServerResponse(response):
+def printServerResponse(method, response):
     if response.getcode() == 200:
-        print ("Server Returned:\n")
+        print (method + ": The server returned:\n")
         print (response.read())
         print ("\n")
     
@@ -85,26 +88,15 @@ def printServerResponse(response):
         print ("Error : " + str(response.getcode)) # print error code
 
 # Instantiate TCIAClient object
-# tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = "http://172.20.11.222:8000/radiology")  # Set the API-Key
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
 # test get_manufacturer_values
 try:    
-    response = tcia_client.get_manufacturer_values(collection = None, bodyPartExamined = None, modality =None, outputFormat = "json")
-    printServerResponse(response);
+    response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = "BRAIN", modality ="MR", outputFormat = "json")
+    printServerResponse(tcia_client.GET_MANUFACTURER_VALUES, response);
 except urllib.error.HTTPError as err:
-    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+    print ("Error executing" + self.GET_MANUFACTURER_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
-try:
-    response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = None, modality =None, outputFormat = "csv")
-    printServerResponse(response);
-except urllib.error.HTTPError as err:
-    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
-try:
-    response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = None, modality ="MR", outputFormat = "xml")
-    printServerResponse(response);
-except urllib.error.HTTPError as err:
-    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
-    
+
 
 # test get_image
 try:
@@ -121,4 +113,4 @@ try:
         print ("Error : " + str(response.getcode)) # print error code
         print ("\n" + str(response.info()))
 except urllib.error.HTTPError as err:
-    print ("Error executing program:\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+    print ("Error executing" + tcia_client.GET_IMAGE + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
