@@ -19,7 +19,6 @@ class TCIAClient:
     GET_SOP_INSTANCE_UIDS = "getSOPInstanceUIDs"
     PATIENTS_BY_MODALITY = "PatientsByModality"
     GET_SERIES_SIZE = "getSeriesSize"
-    
     NEW_PATIENTS_IN_COLLECTION = "NewPatientsInCollection"
     GET_SHARED_LIST = "getSharedList"
 
@@ -119,7 +118,20 @@ class TCIAClient:
         resp = self.execute( serviceUrl , queryParameters)
         return resp
 
-        
+     
+    def new_patients_in_collection(self, collection, date, outputFormat = "json"):   # collection: required, date: required
+        serviceUrl = self.baseUrl + "/" + self.NEW_PATIENTS_IN_COLLECTION
+        queryParameters = { "Collection" : collection, "Date" : date, "format" : outputFormat}
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp
+
+       
+    def get_shared_list(self, name, outputFormat = "json"):   # name: required
+        serviceUrl = self.baseUrl + "/" + self.GET_SHARED_LIST
+        queryParameters = { "name" : name, "format" : outputFormat}
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp
+
 
 def printServerResponse(method, response):
     if response.getcode() == 200:
@@ -132,6 +144,24 @@ def printServerResponse(method, response):
 
 # Instantiate TCIAClient object
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
+
+
+
+# test get_shared_list
+try:    
+    response = tcia_client.get_shared_list(name = "test", outputFormat = "json")
+    printServerResponse(tcia_client.GET_SHARED_LIST, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_SHARED_LIST + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
+
+# test new_patients_in_collection
+try:    
+    response = tcia_client.new_patients_in_collection(collection = "TCGA-GBM", date = "1998-12-08", outputFormat = "json")
+    printServerResponse(tcia_client.NEW_PATIENTS_IN_COLLECTION, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.NEW_PATIENTS_IN_COLLECTION + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
 
 # test get_series_size
 try:    
