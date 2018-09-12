@@ -14,12 +14,12 @@ class TCIAClient:
     GET_BODY_PART_VALUES = "getBodyPartValues"
     GET_PATIENT_STUDY = "getPatientStudy"
     GET_SERIES = "getSeries"
-    GET_PATIENT = "getPatient"
-    
+    GET_PATIENT = "getPatient"    
     NEW_STUDIES_IN_PATIENT_COLLECTION = "NewStudiesInPatientCollection"
     GET_SOP_INSTANCE_UIDS = "getSOPInstanceUIDs"
     PATIENTS_BY_MODALITY = "PatientsByModality"
     GET_SERIES_SIZE = "getSeriesSize"
+    
     NEW_PATIENTS_IN_COLLECTION = "NewPatientsInCollection"
     GET_SHARED_LIST = "getSharedList"
 
@@ -113,6 +113,12 @@ class TCIAClient:
         return resp
 
 
+    def get_series_size(self, seriesInstanceUid, outputFormat = "json"):   # SeriesInstanceUID: required
+        serviceUrl = self.baseUrl + "/" + self.GET_SERIES_SIZE
+        queryParameters = { "SeriesInstanceUID" : seriesInstanceUid, "format" : outputFormat}
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp
+
         
 
 def printServerResponse(method, response):
@@ -126,6 +132,14 @@ def printServerResponse(method, response):
 
 # Instantiate TCIAClient object
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
+
+# test get_series_size
+try:    
+    response = tcia_client.get_series_size(seriesInstanceUid ="1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440", outputFormat = "json")
+    printServerResponse(tcia_client.GET_SERIES_SIZE, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_SERIES_SIZE + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
 
 # test patients_by_modality
 try:    
