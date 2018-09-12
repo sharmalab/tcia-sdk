@@ -10,7 +10,7 @@ class TCIAClient:
     GET_SINGLE_IMAGE = "getSingleImage"
     GET_MANUFACTURER_VALUES = "getManufacturerValues"
     GET_MODALITY_VALUES = "getModalityValues"
-    
+
     GET_COLLECTION_VALUES = "getCollectionValues"
     GET_BODY_PART_VALUES = "getBodyPartValues"
     GET_PATIENT_STUDY = "getPatientStudy"
@@ -111,6 +111,12 @@ except urllib.error.HTTPError as err:
     print ("Error executing " + tcia_client.GET_MODALITY_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
+# test get_collection_values
+try:    
+    response = tcia_client.get_collection_values(outputFormat = "json")
+    printServerResponse(tcia_client.GET_COLLECTION_VALUES, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_COLLECTION_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 # test get_image
 try:
