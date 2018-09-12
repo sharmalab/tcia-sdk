@@ -98,6 +98,13 @@ class TCIAClient:
         resp = self.execute( serviceUrl , queryParameters)
         return resp
 
+
+    def get_sop_instance_uids(self, seriesInstanceUid, outputFormat = "json"):   # SeriesInstanceUID: required
+        serviceUrl = self.baseUrl + "/" + self.GET_SOP_INSTANCE_UIDS
+        queryParameters = { "SeriesInstanceUID" : seriesInstanceUid, "format" : outputFormat}
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp
+
                 
         
 
@@ -112,6 +119,14 @@ def printServerResponse(method, response):
 
 # Instantiate TCIAClient object
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
+
+
+# test get_sop_instance_uids
+try:    
+    response = tcia_client.get_sop_instance_uids(seriesInstanceUid ="1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440", outputFormat = "json")
+    printServerResponse(tcia_client.GET_SOP_INSTANCE_UIDS, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_SOP_INSTANCE_UIDS + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 # test new_studies_in_patient_collection
