@@ -106,6 +106,13 @@ class TCIAClient:
         return resp
 
                 
+    def patients_by_modality(self, collection, modality, outputFormat = "json"):   # collection: required, modality: required
+        serviceUrl = self.baseUrl + "/" + self.PATIENTS_BY_MODALITY
+        queryParameters = { "Collection" : collection, "Modality" : modality, "format" : outputFormat}
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp
+
+
         
 
 def printServerResponse(method, response):
@@ -119,6 +126,13 @@ def printServerResponse(method, response):
 
 # Instantiate TCIAClient object
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
+
+# test patients_by_modality
+try:    
+    response = tcia_client.patients_by_modality(collection ="TCGA-GBM", modality = "MR", outputFormat = "json")
+    printServerResponse(tcia_client.PATIENTS_BY_MODALITY, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.PATIENTS_BY_MODALITY + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 # test get_sop_instance_uids
