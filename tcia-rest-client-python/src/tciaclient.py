@@ -9,8 +9,8 @@ class TCIAClient:
     GET_IMAGE = "getImage"
     GET_SINGLE_IMAGE = "getSingleImage"
     GET_MANUFACTURER_VALUES = "getManufacturerValues"
-
     GET_MODALITY_VALUES = "getModalityValues"
+    
     GET_COLLECTION_VALUES = "getCollectionValues"
     GET_BODY_PART_VALUES = "getBodyPartValues"
     GET_PATIENT_STUDY = "getPatientStudy"
@@ -31,9 +31,9 @@ class TCIAClient:
         resp = urllib.request.urlopen(request)
         return resp
     
-    def get_modality_values(self,collection = None , bodyPartExamined = None , modality = None , outputFormat = "json" ):
+    def get_modality_values(self,collection = None , bodyPartExamined = None, outputFormat = "json" ):
         serviceUrl = self.baseUrl + "/" + self.GET_MODALITY_VALUES
-        queryParameters = {"Collection" : collection , "BodyPartExamined" : bodyPartExamined , "Modality" : modality , "format" : outputFormat }
+        queryParameters = {"Collection" : collection , "BodyPartExamined" : bodyPartExamined , "format" : outputFormat }
         resp = self.execute(serviceUrl , queryParameters)
         return resp
     
@@ -94,12 +94,21 @@ def printServerResponse(method, response):
 
 # Instantiate TCIAClient object
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
+
 # test get_manufacturer_values
 try:    
     response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = "BRAIN", modality ="MR", outputFormat = "json")
     printServerResponse(tcia_client.GET_MANUFACTURER_VALUES, response);
 except urllib.error.HTTPError as err:
-    print ("Error executing " + self.GET_MANUFACTURER_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+    print ("Error executing " + tcia_client.GET_MANUFACTURER_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
+
+# test get_modality_values
+try:    
+    response = tcia_client.get_modality_values(collection = "TCGA-GBM", bodyPartExamined = "BRAIN", outputFormat = "json")
+    printServerResponse(tcia_client.GET_MODALITY_VALUES, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_MODALITY_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 
