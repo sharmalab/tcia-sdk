@@ -7,6 +7,7 @@ import sys
 #
 class TCIAClient:
     GET_IMAGE = "getImage"
+    GET_SINGLE_IMAGE = "getSingleImage"
     GET_MANUFACTURER_VALUES = "getManufacturerValues"
 
     GET_MODALITY_VALUES = "getModalityValues"
@@ -73,7 +74,11 @@ class TCIAClient:
         queryParameters = { "SeriesInstanceUID" : seriesInstanceUid }
         resp = self.execute( serviceUrl , queryParameters)
         return resp
-        
+    def get_single_image(self, sopInstanceUid, seriesInstanceUid):   # SeriesInstanceUID: required, sopInstanceUID: required
+        serviceUrl = self.baseUrl + "/" + self.GET_SINGLE_IMAGE
+        queryParameters = { "SOPInstanceUID" : sopInstanceUid, "SeriesInstanceUID" : seriesInstanceUid}        
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp        
     
                 
         
@@ -94,7 +99,7 @@ try:
     response = tcia_client.get_manufacturer_values(collection = "TCGA-GBM", bodyPartExamined = "BRAIN", modality ="MR", outputFormat = "json")
     printServerResponse(tcia_client.GET_MANUFACTURER_VALUES, response);
 except urllib.error.HTTPError as err:
-    print ("Error executing" + self.GET_MANUFACTURER_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+    print ("Error executing " + self.GET_MANUFACTURER_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 
@@ -113,4 +118,22 @@ try:
         print ("Error : " + str(response.getcode)) # print error code
         print ("\n" + str(response.info()))
 except urllib.error.HTTPError as err:
-    print ("Error executing" + tcia_client.GET_IMAGE + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+    print ("Error executing " + tcia_client.GET_IMAGE + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
+
+# test get_single_image
+try:
+    response = tcia_client.get_single_image(sopInstanceUid = "1.3.6.1.4.1.14519.5.2.1.7695.4001.254637948180506182312529390348", seriesInstanceUid = "1.3.6.1.4.1.14519.5.2.1.7695.4001.306204232344341694648035234440");
+    # Save server response as images.zip in current directory
+    if response.getcode() == 200:
+        print ("\n" + str(response.info()))
+        bytesRead = response.read()
+        fout = open("images.zip", "wb")
+        fout.write(bytesRead)
+        fout.close()
+        print ("\nDownloaded file images.zip from the server")
+    else:
+        print ("Error : " + str(response.getcode)) # print error code
+        print ("\n" + str(response.info()))
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_SINGLE_IMAGE + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())    
