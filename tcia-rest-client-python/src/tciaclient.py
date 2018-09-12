@@ -13,13 +13,14 @@ class TCIAClient:
     GET_SERIES = "getSeries"
     GET_PATIENT = "getPatient"
     
-    def __init__(self, apiKey , baseUrl):
-        self.apiKey = apiKey
+    def __init__(self, credentials , baseUrl):
+        self.credentials = credentials
         self.baseUrl = baseUrl
         
     def execute(self, url, queryParameters={}):
         queryParameters = dict((k, v) for k, v in queryParameters.items() if v)
-        headers = {"api_key" : self.apiKey }
+        credentialsHeader = "ldap" + " " + self.credentials
+        headers = {"Authorization" : credentialsHeader}
         queryString = "?%s" % urllib.parse.urlencode(queryParameters)
         requestUrl = url + queryString
         request = urllib.request.Request(url=requestUrl , headers=headers)
@@ -84,8 +85,8 @@ def printServerResponse(response):
         print ("Error : " + str(response.getcode)) # print error code
 
 # Instantiate TCIAClient object
-tcia_client = TCIAClient(apiKey = "" , baseUrl = "http://172.20.11.222:8000/radiology")  # Set the API-Key
-
+# tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = "http://172.20.11.222:8000/radiology")  # Set the API-Key
+tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
 # test get_manufacturer_values
 try:    
     response = tcia_client.get_manufacturer_values(collection = None, bodyPartExamined = None, modality =None, outputFormat = "json")
