@@ -16,6 +16,14 @@ class TCIAClient:
     GET_SERIES = "getSeries"
     GET_PATIENT = "getPatient"
     
+    NEW_STUDIES_IN_PATIENT_COLLECTION = "NewStudiesInPatientCollection"
+    GET_SOP_INSTANCE_UIDS = "getSOPInstanceUIDs"
+    PATIENTS_BY_MODALITY = "PatientsByModality"
+    GET_SERIES_SIZE = "getSeriesSize"
+    NEW_PATIENTS_IN_COLLECTION = "NewPatientsInCollection"
+    GET_SHARED_LIST = "getSharedList"
+
+
     def __init__(self, credentials , baseUrl):
         self.credentials = credentials
         self.baseUrl = baseUrl
@@ -84,6 +92,12 @@ class TCIAClient:
         resp = self.execute( serviceUrl , queryParameters)
         return resp        
     
+    def new_studies_in_patient_collection(self, collection, date, patientId = None, outputFormat = "json"):   # collection: required, date: required
+        serviceUrl = self.baseUrl + "/" + self.NEW_STUDIES_IN_PATIENT_COLLECTION
+        queryParameters = { "Collection" : collection, "Date" : date, "PatientID": patientId, "format" : outputFormat}
+        resp = self.execute( serviceUrl , queryParameters)
+        return resp
+
                 
         
 
@@ -98,6 +112,15 @@ def printServerResponse(method, response):
 
 # Instantiate TCIAClient object
 tcia_client = TCIAClient(credentials = sys.argv[2] , baseUrl = sys.argv[1])  # Set the API-Key
+
+
+# test new_studies_in_patient_collection
+try:    
+    response = tcia_client.new_studies_in_patient_collection(collection = "TCGA-GBM", date = "1998-12-08", patientId ="TCGA-08-0244", outputFormat = "json")
+    printServerResponse(tcia_client.NEW_STUDIES_IN_PATIENT_COLLECTION, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.NEW_STUDIES_IN_PATIENT_COLLECTION + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
 
 # test get_manufacturer_values
 try:    
