@@ -12,8 +12,8 @@ class TCIAClient:
     GET_MODALITY_VALUES = "getModalityValues"
     GET_COLLECTION_VALUES = "getCollectionValues"
     GET_BODY_PART_VALUES = "getBodyPartValues"
-
     GET_PATIENT_STUDY = "getPatientStudy"
+
     GET_SERIES = "getSeries"
     GET_PATIENT = "getPatient"
     
@@ -61,11 +61,12 @@ class TCIAClient:
         resp = self.execute(serviceUrl , queryParameters)
         return resp
 
-    def get_series(self, collection = None , modality = None , studyInstanceUid = None , outputFormat = "json" ):
+    def get_series(self, collection = None, studyInstanceUid = None, modality = None, patientID = None, seriesInstanceUid = None, bodyPartExamined = None, manufacturer = None, manufacturerModelName = None, outputFormat = "json" ):
         serviceUrl = self.baseUrl + "/" + self.GET_SERIES
-        queryParameters = {"Collection" : collection , "StudyInstanceUID" : studyInstanceUid , "Modality" : modality , "format" : outputFormat }
+        queryParameters = {"Collection" : collection , "StudyInstanceUID" : studyInstanceUid , "Modality" : modality , "SeriesInstanceUID": seriesInstanceUid, "BodyPartExamined": bodyPartExamined, "Manufacturer": manufacturer, "ManufacturerModelName": manufacturerModelName, "format" : outputFormat }
         resp = self.execute(serviceUrl , queryParameters)
         return resp
+
     def get_patient(self,collection = None , outputFormat = "json" ):
         serviceUrl = self.baseUrl + "/" + self.GET_PATIENT
         queryParameters = {"Collection" : collection , "format" : outputFormat }
@@ -127,6 +128,14 @@ try:
     printServerResponse(tcia_client.GET_BODY_PART_VALUES, response);
 except urllib.error.HTTPError as err:
     print ("Error executing " + tcia_client.GET_BODY_PART_VALUES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
+
+
+# test get_series
+try:    
+    response = tcia_client.get_series(collection = "TCGA-GBM", modality = "MR", manufacturer = "GE MEDICAL SYSTEMS", manufacturerModelName = "GENESIS_SIGNA", outputFormat = "json")
+    printServerResponse(tcia_client.GET_SERIES, response);
+except urllib.error.HTTPError as err:
+    print ("Error executing " + tcia_client.GET_SERIES + ":\nError Code: ", str(err.code) , "\nMessage: " , err.read())
 
 
 # test get_collection_values
