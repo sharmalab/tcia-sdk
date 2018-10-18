@@ -20,3 +20,4 @@ The currently implemented methods query the public data sets. Therefore, the use
 You may therefore create your configuration file based on the simple configuration file that can be found at 
 src/main/resources/config.simple.test.yaml instead.
 
+You may build your code with the tests, following the command: mvn clean install
