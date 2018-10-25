@@ -18,10 +18,20 @@
 		</license>
 	</licenses>
 
-	<scm>
-		<url>https://github.com/sharmalab/tcia-sdk.git</url>
-	</scm>
+	<developers>
+		<developer>
+			<name>Pradeeban Kathiravelu</name>
+			<email>pradeeban.kathiravelu@emory.edu</email>
+			<organization>Emory University, Department of Biomedical Informatics</organization>
+			<organizationUrl>http://www.bmi.emory.edu</organizationUrl>
+		</developer>
+	</developers>
 
+	<scm>
+		<connection>scm:git:git://github.com/sharmalab/tcia-sdk.git</connection>
+		<developerConnection>scm:git:ssh://github.com:sharmalab/tcia-sdk.git</developerConnection>
+		<url>http://github.com/ssharmalab/tcia-sdk.git/tree/master</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
