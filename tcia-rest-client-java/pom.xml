@@ -78,7 +78,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.1.0</version>
 			</plugin>
-			<plugin><!-- Invoke mvn verify (or append verify to your existing mvn call to invoke this)-->
+			<plugin><!-- Invoke "mvn package verify" (or append " verify" to your existing mvn call to invoke this)-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.1</version>
@@ -92,7 +92,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin> <!-- Invoke mvn verify (or append verify to your existing mvn call to invoke this)-->
+			<plugin> <!-- Invoke "mvn package verify" (or append " verify" to your existing mvn call to invoke this)-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.5</version>
