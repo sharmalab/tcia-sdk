@@ -27,4 +27,12 @@ You may build your code with the tests, following the command: mvn clean install
 
 ## Using TCIA-SDK as a third-party module in your project
 
+Add the below to your project's parent pom.
+      ``
+      <dependency>
+          <groupId>edu.emory.bmi</groupId>
+          <artifactId>tcia-sdk</artifactId>
+      </dependency>
+      ``
+      
 Make sure to include the authentication details in config.yaml as above, in your project's src/main/resources folder.
