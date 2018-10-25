@@ -77,9 +77,9 @@ public class TCIAClientUtil {
 	 * Authenticate with the given authentication mechanism and return the image result.
 	 * @param uriBuilder the URIBuilder object
 	 * @return the ImageResult
-	 * @throws URISyntaxException, if the given URI syntax is invalid
-	 * @throws TCIAClientException, if TCIA client exception occurred
-	 * @throws IOException, if an IO Exception occurred
+	 * @throws URISyntaxException if the given URI syntax is invalid
+	 * @throws TCIAClientException if TCIA client exception occurred
+	 * @throws IOException if an IO Exception occurred
 	 */
 	public static ImageResult authenticateAndGetImage(URIBuilder uriBuilder) throws URISyntaxException, TCIAClientException, IOException {
 		URI uri = uriBuilder.build();
