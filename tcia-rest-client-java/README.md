@@ -11,7 +11,7 @@ For more information visit http://hc.apache.org/httpcomponents-client-ga/tutoria
 This project requires JDK 1.8 for compiling and running. It does not work with later or earlier versions.
 
 
-## Configuring Authentication
+## Configuring Access and Authentication
 
 Create config.yaml in your execution directory with the correct access information and credentials 
 (TCIA user name and password) to access the TCIA REST API with authentication. 
