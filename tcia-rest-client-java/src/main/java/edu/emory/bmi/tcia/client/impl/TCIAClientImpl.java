@@ -60,7 +60,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param bodyPartExamined the body part examined : optional
 	 * @param format           the format
 	 * @return the modality values
-	 * @throws TCIAClientException if the execution fails
 	 */
 	public String getModalityValues(String collection, String bodyPartExamined,
 	                                OutputFormat format) throws TCIAClientException {
@@ -92,7 +91,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param modality         the modality : optional
 	 * @param format           the format
 	 * @return the manufacturer values
-	 * @throws TCIAClientException if the execution failed
 	 */
 	public String getManufacturerValues(String collection,
 	                                    String bodyPartExamined, String modality, OutputFormat format)
@@ -124,7 +122,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 *
 	 * @param format the format to return the output
 	 * @return the collection values
-	 * @throws TCIAClientException, if the execution failed.
 	 */
 	public String getCollectionValues(OutputFormat format)
 			throws TCIAClientException {
@@ -147,7 +144,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param modality   the modality : optional
 	 * @param format     the output format
 	 * @return the body part values
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getBodyPartValues(String collection, String modality, OutputFormat format) throws TCIAClientException {
 		return getModalityProperties(collection, modality, format, getBodyPartValues);
@@ -161,7 +157,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param studyInstanceUID the UID of the study instance : optional
 	 * @param format           the output format
 	 * @return the patient study
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getPatientStudy(String collection, String patientID,
 	                              String studyInstanceUID, OutputFormat format)
@@ -201,7 +196,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param manufacturerModelName the model of the manufacturer : optional
 	 * @param format                the output format
 	 * @return the series
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getSeries(String collection, String studyInstanceUID, String modality, String patientID,
 	                        String seriesInstanceUID, String bodyPartExamined, String manufacturer,
@@ -256,7 +250,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param collection, the collection name : optional
 	 * @param format,     the output format
 	 * @return the patients
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getPatient(String collection, OutputFormat format)
 			throws TCIAClientException {
@@ -283,7 +276,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param seriesInstanceUID : UID of the series instance : mandatory
 	 * @param format,           the output format
 	 * @return the size of the series
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getSeriesSize(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
 		return getSeriesProperties(seriesInstanceUID, format, getSeriesSize);
@@ -295,7 +287,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 *
 	 * @param seriesInstanceUID, the UID of the series instance. : mandatory
 	 * @return the zip of images
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public ImageResult getImage(String seriesInstanceUID)
 			throws TCIAClientException {
@@ -321,7 +312,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param seriesInstanceUID, the UID of the series instance. : mandatory
 	 * @param sopInstanceUID,    the UID of the Service-Object Pair (SOP). : mandatory
 	 * @return the single image
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public ImageResult getSingleImage(String seriesInstanceUID, String sopInstanceUID)
 			throws TCIAClientException {
@@ -353,7 +343,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param patientID  the ID of the patient : optional
 	 * @param format     the output format
 	 * @return the new studies in the patient collection
-	 * @throws TCIAClientException, if the execution failed.
 	 */
 	public String NewStudiesInPatientCollection(String date, String collection, String patientID, OutputFormat format)
 			throws TCIAClientException {
@@ -385,7 +374,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param seriesInstanceUID the service instance UIDs : mandatory
 	 * @param format            the output format
 	 * @return the SOP Instance UIDs
-	 * @throws TCIAClientException, if the execution failed
 	 */
 	public String getSOPInstanceUIDs(String seriesInstanceUID, OutputFormat format) throws TCIAClientException {
 		return getSeriesProperties(seriesInstanceUID, format, getSOPInstanceUIDs);
@@ -416,7 +404,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param modality   the modality : mandatory
 	 * @param format     the output format
 	 * @return the patients by modality
-	 * @throws TCIAClientException, if the execution failed
 	 */
 
 	public String PatientsByModality(String collection, String modality, OutputFormat format) throws TCIAClientException {
@@ -450,7 +437,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param collection the collection name : mandatory
 	 * @param format     the output format
 	 * @return the new patients in collection
-	 * @throws TCIAClientException if the execution failed.
 	 */
 	public String NewPatientsInCollection(String date, String collection, OutputFormat format) throws TCIAClientException {
 		try {
@@ -478,7 +464,6 @@ public class TCIAClientImpl implements ITCIAClient {
 	 * @param name   the name of the shared list : mandatory
 	 * @param format the output format
 	 * @return the contents of the shared list
-	 * @throws TCIAClientException if the execution failed
 	 */
 	public String getSharedList(String name, OutputFormat format) throws TCIAClientException {
 		try {
