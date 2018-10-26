@@ -13,8 +13,8 @@ This project requires JDK 1.8 for compiling and running. It does not work with l
 
 ## Configuring Authentication
 
-Create src/main/resources/config.yaml with the correct access credentials (TCIA user name and password) to access the
-TCIA REST API with authentication. 
+Create config.yaml in your execution directory with the correct access credentials (TCIA user name and password) 
+to access the TCIA REST API with authentication. 
 
 A sample configuration file can be found at src/main/resources/config.test.yaml.
 

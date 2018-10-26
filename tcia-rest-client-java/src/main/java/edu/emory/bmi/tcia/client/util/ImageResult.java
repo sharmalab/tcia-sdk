@@ -11,13 +11,13 @@ public class ImageResult {
 	public InputStream getRawData() {
 		return rawData;
 	}
-	void setRawData(InputStream rawData) {
+	public void setRawData(InputStream rawData) {
 		this.rawData = rawData;
 	}
 	public Integer getImageCount() {
 		return imageCount;
 	}
-	void setImageCount(Integer imageCount) {
+	public void setImageCount(Integer imageCount) {
 		this.imageCount = imageCount;
 	}
 }
