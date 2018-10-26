@@ -33,6 +33,7 @@ Add the below to your project's parent pom.
       <dependency>
           <groupId>edu.emory.bmi</groupId>
           <artifactId>tcia-sdk</artifactId>
+          <version>1.1.1</version>
       </dependency>
       
       
