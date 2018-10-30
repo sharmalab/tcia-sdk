@@ -1,4 +1,4 @@
-Java Client
+TCIA-SDK -- Java Client
 ================================================
 This project has a dependency on Apache HttpClient.
  
@@ -11,16 +11,18 @@ For more information visit http://hc.apache.org/httpcomponents-client-ga/tutoria
 This project requires JDK 1.8 for compiling and running. It does not work with later or earlier versions.
 
 
-## Configuring Authentication
+## Configuring Access and Authentication
 
-Create config.yaml in your execution directory with the correct access credentials (TCIA user name and password) 
-to access the TCIA REST API with authentication. 
+Create config.yaml in your execution directory with the correct access information and credentials 
+(TCIA user name and password) to access the TCIA REST API with authentication. 
 
 A sample configuration file can be found at src/main/resources/config.test.yaml.
 
-The currently implemented methods query the public data sets. Therefore, the user name and password are optional for now.
-You may therefore create your configuration file based on the simple configuration file that can be found at 
+The currently implemented methods query the public data sets. Therefore, the user name and password are optional for 
+now. You may therefore create your configuration file based on the simple configuration file that can be found at 
 src/main/resources/config.simple.test.yaml instead.
+
+Place the configuration file at your execution directory.
 
 You may build your code with the tests, following the command: mvn clean install
 
@@ -37,4 +39,4 @@ Add the below to your project's parent pom.
       </dependency>
       
       
-Make sure to include the authentication details in config.yaml as above, in your project's src/main/resources folder.
+Make sure to create a config.yaml as above in your project's execution folder.
